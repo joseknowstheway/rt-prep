@@ -3,7 +3,7 @@
 An installable study app for the ARRT Radiation Therapy registry exam. It has 308 questions with rationales, flashcard study with full attempt history, and timed or untimed practice exams with an answer key.
 
 - **Offline first.** Everything is saved on the device immediately, and the app works with no connection.
-- **Your data, your database.** When you sign in, attempts and exams sync to *your* Firebase project (free Spark plan). You can browse, export or delete them there at any time.
+- **Two accounts, one shared history.** Up to two accounts share the same data: every attempt, finished exam and the exam in progress. If one person misses a question, it shows as missed for both. Everything syncs through *your* Firebase project (free Spark plan). You can browse, export or delete them there at any time.
 - **No build step.** Plain HTML, CSS and JavaScript. Nothing to install.
 
 **Live app:** https://joseknowstheway.github.io/rt-prep/ · **Firebase project:** [`rt-prep-9994e6`](https://console.firebase.google.com/project/rt-prep-9994e6/overview)
@@ -17,13 +17,15 @@ An installable study app for the ARRT Radiation Therapy registry exam. It has 30
 | `config.js` | Firebase web API key and project id |
 | `sw.js`, `manifest.webmanifest`, `icons/` | Offline support and the Home Screen install |
 | `firestore.rules`, `firebase.json`, `.firebaserc` | Firestore security rules and the Firebase CLI config to deploy them |
+| `scripts/set-members.sh` | Sets the two accounts that share the data, and turns off new sign-ups |
 | `.github/workflows/deploy.yml` | Deploys to GitHub Pages on every push to `main` |
 
 ## Backend (already set up)
 
 - **Auth:** Firebase Authentication, Email/Password provider. `joseknowstheway.github.io` is an authorized domain.
-- **Database:** Cloud Firestore `(default)` in `nam5`. Data lives at `users/{uid}/attempts/{id}`, `users/{uid}/exams/{id}` and `users/{uid}/app_state/active_exam`.
-- **Security:** `firestore.rules` lets a signed-in account read and write only its own `users/{uid}` subtree, and attempts are create-only. After editing the rules, deploy them with:
+- **Database:** Cloud Firestore `(default)` in `nam5`. All shared data lives under `spaces/main`: `attempts/{id}`, `exams/{id}` and `app_state/active_exam`.
+- **Members:** the `members` field of `spaces/main` lists the auth uids (two at most) allowed in. It can only be changed with admin access: run `scripts/set-members.sh` or edit it in the console. The app can't change it.
+- **Security:** `firestore.rules` denies every account that isn't in `members`, and attempts are create-only. After editing the rules, deploy them with:
   ```bash
   firebase deploy --only firestore:rules
   ```
@@ -34,10 +36,16 @@ The app talks to Firebase over its REST APIs with `fetch`, so no SDK is loaded.
 
 ## First-time use
 
-### Create your account (once)
+### Create the two accounts (once)
 
-1. Open https://joseknowstheway.github.io/rt-prep/ in Safari, go to the **Account** tab, and choose **Create an account**. You're signed in right away.
-2. Recommended: in the Firebase console, go to **Authentication → Settings → User actions** and turn off **Enable create (sign-up)**. That keeps the project to just you.
+1. Each person opens https://joseknowstheway.github.io/rt-prep/, goes to **Account → Create an account**, and signs up. Until step 2 is done, the app shows "This account doesn't have access to the shared study data". Anything answered before then is kept on the device and uploads afterwards.
+2. Run the following once (it needs `gcloud` signed in):
+   ```bash
+   scripts/set-members.sh first@example.com second@example.com
+   ```
+   This adds both accounts as members and turns off new sign-ups, so nobody else can create an account.
+
+**Swapping a member later:** in the Firebase console, turn on **Authentication → Settings → User actions → Enable create (sign-up)**. Have the new person sign up, then run the script again with the two emails. A removed account loses access immediately, but the data it created stays.
 
 ### Install on iPhone and iPad
 
@@ -47,20 +55,20 @@ On each device:
 2. Tap **Share → Add to Home Screen**.
 3. Open the app from the Home Screen, go to **Account**, and sign in.
 
-Each Home Screen app has its own storage, separate from Safari, so sign in inside the installed app. Once you're signed in, both devices share the same history and exams.
+Each Home Screen app has its own storage, separate from Safari, so sign in inside the installed app. Every device signed in to either account sees the same history and exams.
 
 ## How sync works
 
 - Every answer is written to the device right away and queued for upload. The queue uploads when you're online and signed in. The header pill shows the state: **Synced**, **Syncing…**, **N waiting**, **Offline**, or **Not signed in**.
 - The app pulls new data when it opens, when you return to it, and every minute while it's open.
-- Attempts are append-only rows, so two devices can never overwrite each other's answers.
-- The exam in progress syncs too. You can start an exam on the iPad and finish it on the iPhone. For a timed exam, the clock keeps running while you're away.
+- Attempts are append-only, so two people or devices can never overwrite each other's answers. A question's status (Mastered, Missed last, …) comes from the combined history, so the most recent answer by *either* person counts.
+- There is one shared exam in progress. Either person can resume it on any device, and while it exists, neither can start another. For a timed exam, the clock keeps running while you're away.
 
 ## Your data
 
 - **In the app:** **Account → Export backup (JSON)** saves everything. **Export attempts (CSV)** gives a spreadsheet of every answer. **Import backup** merges a file back in without duplicating anything.
-- **In Firebase:** browse the `users` collection under **Firestore Database → Data**. Each attempt has `qid`, `answered_at`, `result` (0 incorrect, 1 correct, 2 skipped), `choice` and `source` (`s` study, `x` exam).
-- **Delete everything:** delete your user under **Authentication → Users**, then delete your `users/{uid}` document (with subcollections) in **Firestore Database**.
+- **In Firebase:** browse `spaces/main` under **Firestore Database → Data**. Each attempt has `qid`, `answered_at`, `result` (0 incorrect, 1 correct, 2 skipped), `choice` and `source` (`s` study, `x` exam).
+- **Delete everything:** in **Firestore Database**, delete the `attempts`, `exams` and `app_state` collections under `spaces/main`. Deleting a user under **Authentication → Users** removes that login but not the shared data.
 
 ## Notes
 

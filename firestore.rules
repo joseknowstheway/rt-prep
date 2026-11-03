@@ -1,15 +1,21 @@
 rules_version = '2';
-// RT Registry Prep: every document lives under users/{uid}, and a signed-in
-// account can only read and write its own subtree.
+// RT Registry Prep: the two member accounts share one data space, spaces/main.
+// spaces/main.members is a list of auth uids. It can only be changed with admin
+// access (Firebase console or gcloud), never from the app. Everyone else is denied.
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isOwner(uid) { return request.auth != null && request.auth.uid == uid; }
+    function isMember() {
+      return request.auth != null
+        && request.auth.uid in get(/databases/$(database)/documents/spaces/main).data.members;
+    }
 
-    match /users/{uid} {
+    match /spaces/main {
+      allow read: if isMember();
+
       // One doc per answered, incorrect or skipped question (study and exams). Append-only.
       match /attempts/{id} {
-        allow read, delete: if isOwner(uid);
-        allow create: if isOwner(uid)
+        allow read, delete: if isMember();
+        allow create: if isMember()
           && request.resource.data.keys().hasOnly(['qid', 'answered_at', 'result', 'choice', 'source', 'created_at'])
           && request.resource.data.qid is string
           && request.resource.data.answered_at is timestamp
@@ -21,11 +27,11 @@ service cloud.firestore {
       }
       // One doc per finished practice exam; "data" is the full answer sheet as JSON.
       match /exams/{id} {
-        allow read, write: if isOwner(uid);
+        allow read, write: if isMember();
       }
-      // Small key/value state, currently the exam in progress ("active_exam").
+      // Small key/value state, currently the shared exam in progress ("active_exam").
       match /app_state/{key} {
-        allow read, write: if isOwner(uid);
+        allow read, write: if isMember();
       }
     }
   }

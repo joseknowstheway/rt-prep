@@ -80,6 +80,9 @@ const FB_PROJECT = String(CFG.firebaseProjectId||"");
 const SYNC_READY = FB_KEY.length>20 && !/^YOUR-/.test(FB_KEY) && /^[a-z0-9-]+$/.test(FB_PROJECT);
 const FS_DB = `projects/${FB_PROJECT}/databases/(default)/documents`;
 const FS_URL = "https://firestore.googleapis.com/v1/"+FS_DB;
+// Both member accounts share one data space. The members list (spaces/main.members, a list of
+// auth uids) is managed with admin access only; firestore.rules deny every other account.
+const SPACE = "/spaces/main";
 const AUTH_URL = "https://identitytoolkit.googleapis.com/v1/accounts:";
 const AUTH_ERR = {
   EMAIL_EXISTS:"An account with that email already exists. Sign in instead.",
@@ -120,13 +123,13 @@ async function api(path,opts={},retry=true){
   if(session.expires_at-60 < now()/1000){ if(!(await refreshSession())) throw new Error("Not signed in"); }
   const r=await fetch(FS_URL+path,Object.assign({},opts,{headers:Object.assign({Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},opts.headers||{})}));
   if(r.status===401&&retry){ if(await refreshSession()) return api(path,opts,false); throw new Error("Not signed in"); }
-  if(!r.ok&&!(r.status===404&&opts.allow404)){ let t=""; try{t=(await r.json()).error.message||""}catch(e){} const err=new Error(t||("Server error "+r.status)); err.status=r.status; throw err; }
+  if(!r.ok&&!(r.status===404&&opts.allow404)){ let t=""; try{t=(await r.json()).error.message||""}catch(e){} const err=new Error(r.status===403?"This account doesn't have access to the shared study data.":t||("Server error "+r.status)); err.status=r.status; throw err; }
   return r;
 }
-async function signIn(email,password){ setSession(await authPost(AUTH_URL+"signInWithPassword?key="+FB_KEY,{email,password,returnSecureToken:true})); lastErr=null; D.meta.since=null; save("meta"); await syncNow(true); }
+async function signIn(email,password){ setSession(await authPost(AUTH_URL+"signInWithPassword?key="+FB_KEY,{email,password,returnSecureToken:true})); lastErr=null; D.meta.since=D.meta.xsince=null; save("meta"); await syncNow(true); }
 async function signUp(email,password){
   setSession(await authPost(AUTH_URL+"signUp?key="+FB_KEY,{email,password,returnSecureToken:true}));
-  lastErr=null; D.meta.since=null; save("meta"); await syncNow(true);
+  lastErr=null; D.meta.since=D.meta.xsince=null; save("meta"); await syncNow(true);
   return "Account created and signed in.";
 }
 async function signOut(){ clearSession(); updateSyncPill(); }
@@ -136,7 +139,22 @@ const fsVal = v=>v===null?{nullValue:null}:typeof v==="boolean"?{booleanValue:v}
 const fsFields = o=>Object.fromEntries(Object.entries(o).map(([k,v])=>[k,fsVal(v)]));
 const fsGet = (doc,k)=>{ const v=doc.fields&&doc.fields[k]; if(!v) return undefined; if("integerValue" in v) return +v.integerValue; if("doubleValue" in v) return v.doubleValue; if("booleanValue" in v) return v.booleanValue; if("timestampValue" in v) return v.timestampValue; return v.stringValue; };
 const docId = name=>name.slice(name.lastIndexOf("/")+1);
-const runQuery = async (uid,q)=>(await (await api(`/users/${uid}:runQuery`,{method:"POST",body:JSON.stringify({structuredQuery:q})})).json()).filter(x=>x.document).map(x=>x.document);
+const runQuery = async q=>(await (await api(SPACE+":runQuery",{method:"POST",body:JSON.stringify({structuredQuery:q})})).json()).filter(x=>x.document).map(x=>x.document);
+// Calls each(doc) for every doc in a collection created after `since` (server created_at, with a
+// 5-minute overlap), paging by (created_at, name). Returns the newest created_at seen.
+async function pullSince(coll,since,each){
+  const where = since ? {fieldFilter:{field:{fieldPath:"created_at"},op:"GREATER_THAN",value:{timestampValue:new Date(parseTs(since)-300000).toISOString()}}} : null;
+  let after=null, maxC=since;
+  for(;;){
+    const q={from:[{collectionId:coll}],orderBy:[{field:{fieldPath:"created_at"},direction:"ASCENDING"},{field:{fieldPath:"__name__"},direction:"ASCENDING"}],limit:1000};
+    if(where) q.where=where;
+    if(after) q.startAt={values:after,before:false};
+    const docs=await runQuery(q);
+    for(const d of docs){ const c=fsGet(d,"created_at"); if(!maxC||parseTs(c)>parseTs(maxC)) maxC=c; each(d); }
+    if(docs.length<1000) return maxC;
+    const last=docs[docs.length-1]; after=[last.fields.created_at,{referenceValue:last.name}];
+  }
+}
 
 function scheduleFlush(ms){ clearTimeout(flushTimer); updateSyncPill(); flushTimer=setTimeout(()=>syncNow(false),ms||1000); }
 async function syncNow(pull){
@@ -151,7 +169,7 @@ async function syncNow(pull){
   if(syncAgain){ syncAgain=false; syncNow(false); }
 }
 async function flush(){
-  const uid=session.user.id, base=`${FS_DB}/users/${uid}`;
+  const base=FS_DB+SPACE;
   let guard=0;
   while(D.outbox.length && guard++<200){
     const op=D.outbox[0];
@@ -174,11 +192,12 @@ async function flush(){
       const sent=new Set(batch); D.outbox=D.outbox.filter(o=>!sent.has(o));
     }else if(op.k==="x"){
       const r=op.row;
-      await api(`/users/${uid}/exams/${encodeURIComponent(r.id)}`,{method:"PATCH",
-        body:JSON.stringify({fields:fsFields({started_at:new Date(r.startedAt),ended_at:new Date(r.endedAt),timed:!!r.timed,n:r.n,correct:r.correct,data:JSON.stringify(r)})})});
+      await api(":commit",{method:"POST",body:JSON.stringify({writes:[{
+        update:{name:`${base}/exams/${r.id}`,fields:fsFields({started_at:new Date(r.startedAt),ended_at:new Date(r.endedAt),timed:!!r.timed,n:r.n,correct:r.correct,data:JSON.stringify(r)})},
+        updateTransforms:[{fieldPath:"created_at",setToServerValue:"REQUEST_TIME"}]}]})});
       D.outbox=D.outbox.filter(o=>o!==op);
     }else if(op.k==="s"){
-      const path=`/users/${uid}/app_state/${encodeURIComponent(op.key)}`;
+      const path=`${SPACE}/app_state/${encodeURIComponent(op.key)}`;
       if(op.data) await api(path,{method:"PATCH",body:JSON.stringify({fields:fsFields({data:JSON.stringify(op.data),updated_at:new Date(op.at)})})});
       else await api(path,{method:"DELETE"});
       D.outbox=D.outbox.filter(o=>o!==op);
@@ -187,39 +206,24 @@ async function flush(){
   }
 }
 async function pull_(){
-  const uid=session.user.id;
   let changed=false;
-  // attempts: incremental by server created_at, with a 5-minute overlap; dedupe by id
-  const have=new Set(D.attempts.map(a=>a.id));
-  const where = D.meta.since ? {fieldFilter:{field:{fieldPath:"created_at"},op:"GREATER_THAN",value:{timestampValue:new Date(parseTs(D.meta.since)-300000).toISOString()}}} : null;
-  let after=null, maxC=D.meta.since;
-  for(;;){
-    const q={from:[{collectionId:"attempts"}],orderBy:[{field:{fieldPath:"created_at"},direction:"ASCENDING"},{field:{fieldPath:"__name__"},direction:"ASCENDING"}],limit:1000};
-    if(where) q.where=where;
-    if(after) q.startAt={values:after,before:false};
-    const docs=await runQuery(uid,q);
-    for(const d of docs){
-      const c=fsGet(d,"created_at"); if(!maxC||parseTs(c)>parseTs(maxC)) maxC=c;
-      const id=docId(d.name); if(have.has(id)) continue; have.add(id);
-      D.attempts.push({id,qid:fsGet(d,"qid"),t:parseTs(fsGet(d,"answered_at")),r:fsGet(d,"result"),c:fsGet(d,"choice"),src:fsGet(d,"source")}); changed=true;
-    }
-    if(docs.length<1000) break;
-    const last=docs[docs.length-1]; after=[last.fields.created_at,{referenceValue:last.name}];
-  }
-  if(changed){ byQ=null; save("attempts"); }
-  D.meta.since=maxC;
-  // exams: fetch any finished exams this device hasn't seen
-  const ids=(await runQuery(uid,{from:[{collectionId:"exams"}],select:{fields:[{fieldPath:"__name__"}]}})).map(d=>decodeURIComponent(docId(d.name)));
-  const missing=ids.filter(id=>!D.exams[id]);
-  for(let i=0;i<missing.length;i+=100){
-    const chunk=missing.slice(i,i+100);
-    const rows=await (await api(":batchGet",{method:"POST",body:JSON.stringify({documents:chunk.map(id=>`${FS_DB}/users/${uid}/exams/${encodeURIComponent(id)}`),mask:{fieldPaths:["data"]}})})).json();
-    rows.forEach(r=>{ if(!r.found) return; let x=null; try{x=JSON.parse(fsGet(r.found,"data"))}catch(e){} if(x&&x.id){ D.exams[x.id]=x; changed=true; } });
-  }
-  if(missing.length) save("exams");
+  // attempts: dedupe by id
+  const have=new Set(D.attempts.map(a=>a.id)); let na=0;
+  D.meta.since=await pullSince("attempts",D.meta.since,d=>{
+    const id=docId(d.name); if(have.has(id)) return; have.add(id);
+    D.attempts.push({id,qid:fsGet(d,"qid"),t:parseTs(fsGet(d,"answered_at")),r:fsGet(d,"result"),c:fsGet(d,"choice"),src:fsGet(d,"source")}); na++;
+  });
+  if(na){ byQ=null; save("attempts"); changed=true; }
+  // finished exams this device hasn't seen
+  let nx=0;
+  D.meta.xsince=await pullSince("exams",D.meta.xsince,d=>{
+    let x=null; try{x=JSON.parse(fsGet(d,"data"))}catch(e){}
+    if(x&&x.id&&!D.exams[x.id]){ D.exams[x.id]=x; nx++; }
+  });
+  if(nx){ save("exams"); changed=true; }
   // exam in progress: newest version wins unless this device has an unsent change
   if(!D.outbox.some(o=>o.k==="s")){
-    const r=await api(`/users/${uid}/app_state/active_exam?mask.fieldPaths=data`,{allow404:true});
+    const r=await api(SPACE+"/app_state/active_exam?mask.fieldPaths=data",{allow404:true});
     let next=D.active;
     if(r.status!==404){ let rd=null; try{rd=JSON.parse(fsGet(await r.json(),"data"))}catch(e){} if(rd&&(!D.active||(rd.updatedAt||0)>(D.active.updatedAt||0))) next=rd; }
     else next=null;
@@ -654,7 +658,7 @@ function renderSettings(){
   if(!SYNC_READY){
     acct=`<p class="sub" style="margin:0">Sync isn't set up yet, so everything is saved on this device only. Add your Firebase API key and project ID to <span class="mono">config.js</span> (see the README), then redeploy.</p>`;
   }else if(!session){
-    acct=`<p class="sub" style="margin:0">Sign in to sync your history and exams between your iPhone and iPad. Anything you do before signing in uploads once you sign in.</p>
+    acct=`<p class="sub" style="margin:0">Sign in to share one study history, exam list and exam in progress across both accounts and all your devices. Anything you do before signing in uploads once you sign in.</p>
     <form id="authform" class="stack" novalidate>
       <div class="field"><label for="au-email">Email</label><input class="input" id="au-email" type="email" autocomplete="email" autocapitalize="off" required></div>
       <div class="field"><label for="au-pass">Password</label><input class="input" id="au-pass" type="password" autocomplete="${au.mode==="up"?"new-password":"current-password"}" minlength="6" required></div>
