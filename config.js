@@ -1,9 +1,8 @@
-// Your Supabase project details (Supabase dashboard > Project Settings > API).
-// Paste the Project URL and the publishable (or legacy "anon") key below.
-// These two values are safe to publish: row-level security in supabase/schema.sql
-// lets each signed-in account read and write only its own rows.
-// Never put the service_role / secret key here.
+// Your Firebase project details (Firebase console > Project settings > General > Your apps).
+// These values are safe to publish: the rules in firestore.rules let each signed-in
+// account read and write only its own data under users/{uid}.
+// Never put a service account key here.
 window.RT_CONFIG = {
-  supabaseUrl: "https://YOUR-PROJECT-REF.supabase.co",
-  supabaseKey: "YOUR-PUBLISHABLE-OR-ANON-KEY"
+  firebaseApiKey: "AIzaSyCoKyjqnhagYQ3MMZDz9S-80I-otaepmuY",
+  firebaseProjectId: "rt-prep-9994e6"
 };

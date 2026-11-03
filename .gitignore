@@ -1,4 +1,5 @@
 .DS_Store
 .env
 .env.*
-supabase/.temp/
+.firebase/
+*-debug.log

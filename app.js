@@ -1,4 +1,4 @@
-/* RT Registry Prep — offline-first study app with optional Supabase sync. */
+/* RT Registry Prep — offline-first study app with optional Firebase sync. */
 "use strict";
 const QDATA = window.QDATA || [];
 const SECTIONS = [
@@ -72,33 +72,44 @@ function setActive(obj){
 function addExam(res){ D.exams[res.id]=res; D.outbox.push({k:"x",row:res}); save("exams","outbox"); scheduleFlush(800); }
 
 /* =====================================================================
-   SUPABASE SYNC (REST + Auth over fetch; no SDK)
+   FIREBASE SYNC (Auth + Firestore REST over fetch; no SDK)
    ===================================================================== */
 const CFG = window.RT_CONFIG||{};
-const SB_URL = String(CFG.supabaseUrl||"").replace(/\/+$/,"");
-const SB_KEY = String(CFG.supabaseKey||"");
-const SYNC_READY = /^https:\/\/\S+$/.test(SB_URL) && !/YOUR-PROJECT/.test(SB_URL) && SB_KEY.length>20 && !/^YOUR-/.test(SB_KEY);
+const FB_KEY = String(CFG.firebaseApiKey||"");
+const FB_PROJECT = String(CFG.firebaseProjectId||"");
+const SYNC_READY = FB_KEY.length>20 && !/^YOUR-/.test(FB_KEY) && /^[a-z0-9-]+$/.test(FB_PROJECT);
+const FS_DB = `projects/${FB_PROJECT}/databases/(default)/documents`;
+const FS_URL = "https://firestore.googleapis.com/v1/"+FS_DB;
+const AUTH_URL = "https://identitytoolkit.googleapis.com/v1/accounts:";
+const AUTH_ERR = {
+  EMAIL_EXISTS:"An account with that email already exists. Sign in instead.",
+  EMAIL_NOT_FOUND:"Email or password is incorrect.", INVALID_PASSWORD:"Email or password is incorrect.", INVALID_LOGIN_CREDENTIALS:"Email or password is incorrect.",
+  INVALID_EMAIL:"That email address isn't valid.", WEAK_PASSWORD:"Use a password of at least 6 characters.",
+  USER_DISABLED:"This account has been disabled.", TOO_MANY_ATTEMPTS_TRY_LATER:"Too many attempts. Wait a few minutes and try again.",
+  OPERATION_NOT_ALLOWED:"Email sign-in isn't enabled for this Firebase project.", ADMIN_ONLY_OPERATION:"New sign-ups are turned off for this app."
+};
 let session = LS.get("rt.session",null);
 let syncing=false, syncAgain=false, flushTimer=null, lastErr=null, refreshing=null;
 
+// Accepts both sign-in responses (idToken, localId…) and token-refresh responses (id_token, user_id…).
 function setSession(d){
-  session={access_token:d.access_token, refresh_token:d.refresh_token,
-    expires_at: d.expires_at || Math.floor(now()/1000)+(d.expires_in||3600),
-    user:{id:d.user&&d.user.id, email:d.user&&d.user.email}};
+  session={access_token:d.idToken||d.id_token, refresh_token:d.refreshToken||d.refresh_token,
+    expires_at: Math.floor(now()/1000)+(+(d.expiresIn||d.expires_in)||3600),
+    user:{id:d.localId||d.user_id, email:d.email||(session&&session.user.email)}};
   LS.set("rt.session",session);
 }
 function clearSession(){ session=null; LS.del("rt.session"); }
-async function authPost(path,body){
-  const r=await fetch(SB_URL+path,{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
+async function authPost(url,body,form){
+  const r=await fetch(url,{method:"POST",headers:{"Content-Type":form?"application/x-www-form-urlencoded":"application/json"},body:form?new URLSearchParams(body):JSON.stringify(body)});
   let j={}; try{j=await r.json()}catch(e){}
-  if(!r.ok){ const err=new Error(j.error_description||j.msg||j.message||j.error||("Request failed ("+r.status+")")); err.status=r.status; throw err; }
+  if(!r.ok){ const m=String((j.error&&j.error.message)||""); const err=new Error(AUTH_ERR[m.split(/[ :]/)[0]]||m||("Request failed ("+r.status+")")); err.status=r.status; throw err; }
   return j;
 }
 async function refreshSession(){
   if(!session) return false;
   if(refreshing) return refreshing;
   refreshing=(async()=>{
-    try{ setSession(await authPost("/auth/v1/token?grant_type=refresh_token",{refresh_token:session.refresh_token})); return true; }
+    try{ setSession(await authPost("https://securetoken.googleapis.com/v1/token?key="+FB_KEY,{grant_type:"refresh_token",refresh_token:session.refresh_token},true)); return true; }
     catch(e){ if(e.status>=400&&e.status<500){ clearSession(); lastErr="Signed out. Sign in again in Settings."; return false; } throw e; }
     finally{ refreshing=null; }
   })();
@@ -107,21 +118,26 @@ async function refreshSession(){
 async function api(path,opts={},retry=true){
   if(!session) throw new Error("Not signed in");
   if(session.expires_at-60 < now()/1000){ if(!(await refreshSession())) throw new Error("Not signed in"); }
-  const r=await fetch(SB_URL+path,Object.assign({},opts,{headers:Object.assign({apikey:SB_KEY,Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},opts.headers||{})}));
+  const r=await fetch(FS_URL+path,Object.assign({},opts,{headers:Object.assign({Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},opts.headers||{})}));
   if(r.status===401&&retry){ if(await refreshSession()) return api(path,opts,false); throw new Error("Not signed in"); }
-  if(!r.ok){ let t=""; try{t=(await r.json()).message||""}catch(e){} throw new Error(t||("Server error "+r.status)); }
+  if(!r.ok&&!(r.status===404&&opts.allow404)){ let t=""; try{t=(await r.json()).error.message||""}catch(e){} const err=new Error(t||("Server error "+r.status)); err.status=r.status; throw err; }
   return r;
 }
-async function signIn(email,password){ setSession(await authPost("/auth/v1/token?grant_type=password",{email,password})); lastErr=null; D.meta.since=null; save("meta"); await syncNow(true); }
+async function signIn(email,password){ setSession(await authPost(AUTH_URL+"signInWithPassword?key="+FB_KEY,{email,password,returnSecureToken:true})); lastErr=null; D.meta.since=null; save("meta"); await syncNow(true); }
 async function signUp(email,password){
-  const j=await authPost("/auth/v1/signup",{email,password});
-  if(j.access_token){ setSession(j); await syncNow(true); return "Account created and signed in."; }
-  return "Account created. Open the confirmation email on this device, then come back and sign in.";
+  setSession(await authPost(AUTH_URL+"signUp?key="+FB_KEY,{email,password,returnSecureToken:true}));
+  lastErr=null; D.meta.since=null; save("meta"); await syncNow(true);
+  return "Account created and signed in.";
 }
-async function signOut(){
-  if(session){ try{ await fetch(SB_URL+"/auth/v1/logout",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+session.access_token}}) }catch(e){} }
-  clearSession(); updateSyncPill();
-}
+async function signOut(){ clearSession(); updateSyncPill(); }
+
+/* ---------- Firestore value encoding ---------- */
+const fsVal = v=>v===null?{nullValue:null}:typeof v==="boolean"?{booleanValue:v}:Number.isInteger(v)?{integerValue:String(v)}:typeof v==="number"?{doubleValue:v}:v instanceof Date?{timestampValue:v.toISOString()}:{stringValue:String(v)};
+const fsFields = o=>Object.fromEntries(Object.entries(o).map(([k,v])=>[k,fsVal(v)]));
+const fsGet = (doc,k)=>{ const v=doc.fields&&doc.fields[k]; if(!v) return undefined; if("integerValue" in v) return +v.integerValue; if("doubleValue" in v) return v.doubleValue; if("booleanValue" in v) return v.booleanValue; if("timestampValue" in v) return v.timestampValue; return v.stringValue; };
+const docId = name=>name.slice(name.lastIndexOf("/")+1);
+const runQuery = async (uid,q)=>(await (await api(`/users/${uid}:runQuery`,{method:"POST",body:JSON.stringify({structuredQuery:q})})).json()).filter(x=>x.document).map(x=>x.document);
+
 function scheduleFlush(ms){ clearTimeout(flushTimer); updateSyncPill(); flushTimer=setTimeout(()=>syncNow(false),ms||1000); }
 async function syncNow(pull){
   if(!SYNC_READY||!session||!navigator.onLine){ updateSyncPill(); return; }
@@ -135,60 +151,77 @@ async function syncNow(pull){
   if(syncAgain){ syncAgain=false; syncNow(false); }
 }
 async function flush(){
-  const uid=session.user.id;
+  const uid=session.user.id, base=`${FS_DB}/users/${uid}`;
   let guard=0;
   while(D.outbox.length && guard++<200){
     const op=D.outbox[0];
     if(op.k==="a"){
-      const batch=D.outbox.filter(o=>o.k==="a").slice(0,500);
-      await api("/rest/v1/attempts?on_conflict=id",{method:"POST",headers:{Prefer:"resolution=ignore-duplicates,return=minimal"},
-        body:JSON.stringify(batch.map(o=>({id:o.row.id,user_id:uid,qid:o.row.qid,answered_at:new Date(o.row.t).toISOString(),result:o.row.r,choice:o.row.c,source:o.row.src})))});
+      // Attempts are create-only. A commit is atomic, so when one was already uploaded
+      // the server answers 409 naming it: drop that one and retry the rest.
+      let batch=D.outbox.filter(o=>o.k==="a").slice(0,500);
+      while(batch.length){
+        try{
+          await api(":commit",{method:"POST",body:JSON.stringify({writes:batch.map(o=>({
+            update:{name:`${base}/attempts/${o.row.id}`,fields:fsFields({qid:o.row.qid,answered_at:new Date(o.row.t),result:o.row.r,choice:o.row.c,source:o.row.src})},
+            updateTransforms:[{fieldPath:"created_at",setToServerValue:"REQUEST_TIME"}],
+            currentDocument:{exists:false}}))})});
+          break;
+        }catch(e){
+          const dup=e.status===409&&batch.find(o=>e.message.endsWith("/attempts/"+o.row.id)); if(!dup) throw e;
+          batch=batch.filter(o=>o!==dup); D.outbox=D.outbox.filter(o=>o!==dup);
+        }
+      }
       const sent=new Set(batch); D.outbox=D.outbox.filter(o=>!sent.has(o));
     }else if(op.k==="x"){
       const r=op.row;
-      await api("/rest/v1/exams?on_conflict=user_id,id",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
-        body:JSON.stringify({user_id:uid,id:r.id,started_at:new Date(r.startedAt).toISOString(),ended_at:new Date(r.endedAt).toISOString(),timed:!!r.timed,n:r.n,correct:r.correct,data:r})});
+      await api(`/users/${uid}/exams/${encodeURIComponent(r.id)}`,{method:"PATCH",
+        body:JSON.stringify({fields:fsFields({started_at:new Date(r.startedAt),ended_at:new Date(r.endedAt),timed:!!r.timed,n:r.n,correct:r.correct,data:JSON.stringify(r)})})});
       D.outbox=D.outbox.filter(o=>o!==op);
     }else if(op.k==="s"){
-      if(op.data) await api("/rest/v1/app_state?on_conflict=user_id,key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
-        body:JSON.stringify({user_id:uid,key:op.key,data:op.data,updated_at:new Date(op.at).toISOString()})});
-      else await api("/rest/v1/app_state?key=eq."+encodeURIComponent(op.key),{method:"DELETE",headers:{Prefer:"return=minimal"}});
+      const path=`/users/${uid}/app_state/${encodeURIComponent(op.key)}`;
+      if(op.data) await api(path,{method:"PATCH",body:JSON.stringify({fields:fsFields({data:JSON.stringify(op.data),updated_at:new Date(op.at)})})});
+      else await api(path,{method:"DELETE"});
       D.outbox=D.outbox.filter(o=>o!==op);
     }else{ D.outbox.shift(); }
     save("outbox"); updateSyncPill();
   }
 }
 async function pull_(){
+  const uid=session.user.id;
   let changed=false;
   // attempts: incremental by server created_at, with a 5-minute overlap; dedupe by id
   const have=new Set(D.attempts.map(a=>a.id));
-  const sinceQ = D.meta.since ? "&created_at=gt."+encodeURIComponent(new Date(parseTs(D.meta.since)-300000).toISOString()) : "";
-  let offset=0, maxC=D.meta.since;
+  const where = D.meta.since ? {fieldFilter:{field:{fieldPath:"created_at"},op:"GREATER_THAN",value:{timestampValue:new Date(parseTs(D.meta.since)-300000).toISOString()}}} : null;
+  let after=null, maxC=D.meta.since;
   for(;;){
-    const rows=await (await api(`/rest/v1/attempts?select=id,qid,answered_at,result,choice,source,created_at${sinceQ}&order=created_at.asc,id.asc&limit=1000&offset=${offset}`)).json();
-    for(const r of rows){
-      if(!maxC||parseTs(r.created_at)>parseTs(maxC)) maxC=r.created_at;
-      if(have.has(r.id)) continue; have.add(r.id);
-      D.attempts.push({id:r.id,qid:r.qid,t:parseTs(r.answered_at),r:r.result,c:r.choice,src:r.source}); changed=true;
+    const q={from:[{collectionId:"attempts"}],orderBy:[{field:{fieldPath:"created_at"},direction:"ASCENDING"},{field:{fieldPath:"__name__"},direction:"ASCENDING"}],limit:1000};
+    if(where) q.where=where;
+    if(after) q.startAt={values:after,before:false};
+    const docs=await runQuery(uid,q);
+    for(const d of docs){
+      const c=fsGet(d,"created_at"); if(!maxC||parseTs(c)>parseTs(maxC)) maxC=c;
+      const id=docId(d.name); if(have.has(id)) continue; have.add(id);
+      D.attempts.push({id,qid:fsGet(d,"qid"),t:parseTs(fsGet(d,"answered_at")),r:fsGet(d,"result"),c:fsGet(d,"choice"),src:fsGet(d,"source")}); changed=true;
     }
-    offset+=rows.length; if(rows.length<1000) break;
+    if(docs.length<1000) break;
+    const last=docs[docs.length-1]; after=[last.fields.created_at,{referenceValue:last.name}];
   }
   if(changed){ byQ=null; save("attempts"); }
   D.meta.since=maxC;
   // exams: fetch any finished exams this device hasn't seen
-  const ids=(await (await api("/rest/v1/exams?select=id")).json()).map(r=>r.id);
+  const ids=(await runQuery(uid,{from:[{collectionId:"exams"}],select:{fields:[{fieldPath:"__name__"}]}})).map(d=>decodeURIComponent(docId(d.name)));
   const missing=ids.filter(id=>!D.exams[id]);
-  for(let i=0;i<missing.length;i+=40){
-    const chunk=missing.slice(i,i+40);
-    const rows=await (await api(`/rest/v1/exams?select=data&id=in.(${chunk.map(encodeURIComponent).join(",")})`)).json();
-    rows.forEach(r=>{ if(r.data&&r.data.id){ D.exams[r.data.id]=r.data; changed=true; } });
+  for(let i=0;i<missing.length;i+=100){
+    const chunk=missing.slice(i,i+100);
+    const rows=await (await api(":batchGet",{method:"POST",body:JSON.stringify({documents:chunk.map(id=>`${FS_DB}/users/${uid}/exams/${encodeURIComponent(id)}`),mask:{fieldPaths:["data"]}})})).json();
+    rows.forEach(r=>{ if(!r.found) return; let x=null; try{x=JSON.parse(fsGet(r.found,"data"))}catch(e){} if(x&&x.id){ D.exams[x.id]=x; changed=true; } });
   }
   if(missing.length) save("exams");
   // exam in progress: newest version wins unless this device has an unsent change
   if(!D.outbox.some(o=>o.k==="s")){
-    const rows=await (await api("/rest/v1/app_state?select=data,updated_at&key=eq.active_exam")).json();
+    const r=await api(`/users/${uid}/app_state/active_exam?mask.fieldPaths=data`,{allow404:true});
     let next=D.active;
-    if(rows.length){ const rd=rows[0].data; if(!D.active||(rd.updatedAt||0)>(D.active.updatedAt||0)) next=rd; }
+    if(r.status!==404){ let rd=null; try{rd=JSON.parse(fsGet(await r.json(),"data"))}catch(e){} if(rd&&(!D.active||(rd.updatedAt||0)>(D.active.updatedAt||0))) next=rd; }
     else next=null;
     if(next&&D.exams[next.id]) next=null;
     if(JSON.stringify(next)!==JSON.stringify(D.active)){ D.active=next; save("active"); changed=true; }
@@ -619,7 +652,7 @@ function renderSettings(){
   const au=S.auth;
   let acct;
   if(!SYNC_READY){
-    acct=`<p class="sub" style="margin:0">Sync isn't set up yet, so everything is saved on this device only. Add your Supabase Project URL and key to <span class="mono">config.js</span> (see the README), then redeploy.</p>`;
+    acct=`<p class="sub" style="margin:0">Sync isn't set up yet, so everything is saved on this device only. Add your Firebase API key and project ID to <span class="mono">config.js</span> (see the README), then redeploy.</p>`;
   }else if(!session){
     acct=`<p class="sub" style="margin:0">Sign in to sync your history and exams between your iPhone and iPad. Anything you do before signing in uploads once you sign in.</p>
     <form id="authform" class="stack" novalidate>
@@ -637,7 +670,7 @@ function renderSettings(){
   const exN=Object.keys(D.exams).length;
   const html=`<div class="wrap">
     <div class="stack" style="gap:6px"><div class="eyebrow">Account</div><h1 class="h1">Sync and your data</h1>
-    <p class="sub">Your answers live on this device first and sync to your own Supabase database when you're signed in, so the app keeps working offline.</p></div>
+    <p class="sub">Your answers live on this device first and sync to your own Firebase project when you're signed in, so the app keeps working offline.</p></div>
     <section class="panel stack"><h2 class="h2">Sync</h2>${acct}</section>
     <section class="panel stack"><h2 class="h2">Backups</h2>
       <p class="sub" style="margin:0">This device holds ${D.attempts.length.toLocaleString()} attempts and ${exN} finished exam${exN===1?"":"s"}. Export a copy anytime; importing merges a backup without duplicating anything.</p>

@@ -20,8 +20,8 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
 
-  // Never cache Supabase API or auth traffic.
-  if (url.hostname.endsWith(".supabase.co") || url.pathname.includes("/rest/v1/") || url.pathname.includes("/auth/v1/")) return;
+  // Never cache Firestore or auth traffic.
+  if (["firestore.googleapis.com", "identitytoolkit.googleapis.com", "securetoken.googleapis.com"].includes(url.hostname)) return;
 
   // Google Fonts: cache after first use so typography works offline.
   if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
