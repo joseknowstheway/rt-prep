@@ -12,6 +12,10 @@ const SECNAME = Object.fromEntries(SECTIONS.map(s=>[s.k,s.name]));
 const QBY = {}; QDATA.forEach(q=>QBY[q.id]=q);
 const L = "ABCD";
 const PASS = 75;
+// ARRT 2026 Primary Eligibility Pathway Handbook, Radiation Therapy: 230 items (200 scored + 30 pilot)
+// in a 230-minute test time. Timed practice exams get one clock at that pace, scaled to their length.
+const OFFICIAL = {items:230, minutes:230};
+const examLimitSec = n=>Math.round(n*OFFICIAL.minutes*60/OFFICIAL.items);
 
 /* ---------- utils ---------- */
 const $ = (s,r=document)=>r.querySelector(s);
@@ -21,6 +25,7 @@ const permStr = ()=>shuffle([0,1,2,3]).join("");
 const now = ()=>Date.now();
 const fmtDT = t=>new Date(t).toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
 const fmtDur = s=>{s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0")};
+const fmtMin = s=>{const m=Math.round(s/60),h=Math.floor(m/60);return h?`${h} h${m%60?" "+m%60+" min":""}`:m+" min"};
 const pct = (a,b)=>b?Math.round(100*a/b):0;
 const clone = o=>o==null?o:JSON.parse(JSON.stringify(o));
 const uuid = ()=>{ if(crypto.randomUUID) return crypto.randomUUID(); const b=crypto.getRandomValues(new Uint8Array(16)); b[6]=b[6]&15|64; b[8]=b[8]&63|128; const h=[...b].map(x=>x.toString(16).padStart(2,"0")).join(""); return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`; };
@@ -453,7 +458,7 @@ function startExam(){
   let ids=[]; SECTIONS.forEach(s=>{ids=ids.concat(shuffle(QDATA.filter(q=>q.s===s.k).map(q=>q.id)).slice(0,comp[s.k]))});
   ids=shuffle(ids);
   const perm={}; ids.forEach(id=>perm[id]=permStr());
-  setActive({id:"x"+now(),startedAt:now(),timed:S.exams.timed,limitSec:n*60,n,ids,perm,ans:{},flags:[],cur:0});
+  setActive({id:"x"+now(),startedAt:now(),timed:S.exams.timed,limitSec:examLimitSec(n),n,ids,perm,ans:{},flags:[],cur:0});
   S.exams.view="run"; renderNav(); render(true);
 }
 const ex=()=>D.active;
@@ -482,9 +487,10 @@ function renderExams(){
       <p class="sub" style="margin:0">Started ${fmtDT(a.startedAt)} · ${a.timed?`${fmtDur(Math.max(0,remaining(a)))} left. The clock keeps running while you're away.`:"Untimed"}</p>
       <div class="row"><button class="btn primary" data-act="ex-resume">Resume exam</button><button class="btn danger" data-act="ex-discard">Discard</button></div></section>`:`
     <section class="panel stack"><div class="lab">Length</div>
-      <div class="choices">${lens.map(([n,l,d])=>`<button class="choice" data-act="ex-len" data-v="${n}" aria-pressed="${S.exams.len===n}"><span><b>${l}</b><br><span style="font-size:13px;color:var(--muted)">${d}</span></span><span class="n">${S.exams.timed?n+" min":"no limit"}</span></button>`).join("")}</div>
+      <div class="choices">${lens.map(([n,l,d])=>`<button class="choice" data-act="ex-len" data-v="${n}" aria-pressed="${S.exams.len===n}"><span><b>${l}</b><br><span style="font-size:13px;color:var(--muted)">${d}</span></span><span class="n">${S.exams.timed?fmtMin(examLimitSec(n)):"no limit"}</span></button>`).join("")}</div>
       <div class="lab" style="margin-top:6px">Timing</div>
-      <div class="chips"><button class="chip" data-act="ex-timed" data-v="1" aria-pressed="${S.exams.timed}">Timed · 1 min per question</button><button class="chip" data-act="ex-timed" data-v="0" aria-pressed="${!S.exams.timed}">Untimed</button></div>
+      <div class="chips"><button class="chip" data-act="ex-timed" data-v="1" aria-pressed="${S.exams.timed}">Timed · one clock for the whole exam</button><button class="chip" data-act="ex-timed" data-v="0" aria-pressed="${!S.exams.timed}">Untimed</button></div>
+      ${S.exams.timed?`<p style="font-size:13px;color:var(--muted);margin:0">${fmtMin(examLimitSec(S.exams.len))} for all ${S.exams.len} questions, at the official ARRT pace of ${OFFICIAL.minutes} minutes for ${OFFICIAL.items} questions. Spend it however you like. When time runs out, the exam is submitted and anything unanswered is scored as incorrect.</p>`:""}
       <p style="font-size:13px;color:var(--muted);margin:0">Mix: ${SECTIONS.map(s=>`${esc(s.name)} ${comp[s.k]}`).join(" · ")}</p>
       <button class="btn primary wide" data-act="ex-start" style="min-height:54px;font-size:17px">Start ${S.exams.len}-question exam</button>
     </section>`}
@@ -498,7 +504,7 @@ function progressPanel(results){
   return `<section class="panel stack"><h2 class="h2">Your progress</h2>
     <div class="stats"><div class="stat"><b>${latest}%</b><span>Latest</span></div><div class="stat"><b>${best}%</b><span>Best</span></div><div class="stat"><b>${avg}%</b><span>Average</span></div><div class="stat"><b>${results.length}</b><span>Exams taken</span></div></div>
     ${chartSVG(asc)}
-    <ul class="xlist">${results.map(r=>{const p=pct(r.correct,r.n);return `<li><button class="xitem" data-act="ex-open" data-v="${esc(r.id)}"><span class="pct" style="color:${p>=PASS?"var(--ok)":"var(--bad)"}">${p}%</span><span><b style="font-weight:600">${r.n} questions · ${r.timed?"Timed":"Untimed"}</b><br><span class="meta">${fmtDT(r.endedAt)} · ${fmtDur((r.endedAt-r.startedAt)/1000)}</span></span><span aria-hidden="true" style="color:var(--muted)">›</span></button></li>`}).join("")}</ul>
+    <ul class="xlist">${results.map(r=>{const p=pct(r.correct,r.n);return `<li><button class="xitem" data-act="ex-open" data-v="${esc(r.id)}"><span class="pct" style="color:${p>=PASS?"var(--ok)":"var(--bad)"}">${p}%</span><span><b style="font-weight:600">${r.n} questions · ${r.timed?"Timed":"Untimed"}</b><br><span class="meta">${fmtDT(r.endedAt)} · ${fmtDur((r.endedAt-r.startedAt)/1000)}${r.auto?' · <span style="color:var(--bad);font-weight:600">Time ran out</span>':""}</span></span><span aria-hidden="true" style="color:var(--muted)">›</span></button></li>`}).join("")}</ul>
   </section>`;
 }
 function chartSVG(asc){
@@ -519,7 +525,7 @@ function renderExamRun(){
   const opts=perm.map((oi,pos)=>`<li><button class="opt ${chosen===oi?"sel":""}" data-act="ex-ans" data-v="${oi}" aria-pressed="${chosen===oi}"><span class="k">${L[pos]}</span><span>${esc(q.o[oi])}</span></button></li>`).join("");
   return `<div class="wrap">
     <div class="examtop">
-      <span class="timer" id="timer" role="timer">--:--</span>
+      <span style="font-size:13px;color:var(--muted)">${a.timed?"Time left":"Elapsed"}</span><span class="timer" id="timer" role="timer" aria-label="${a.timed?"Time left for the whole exam":"Time elapsed"}">--:--</span>
       <span class="mono" style="font-size:13px;color:var(--muted)">${Object.keys(a.ans).length}/${a.n} answered</span>
       <span style="flex:1"></span>
       <button class="btn navbtn-mobile" data-act="ex-grid" style="min-height:40px;padding:8px 12px">All questions</button>
@@ -555,7 +561,8 @@ function submitExam(auto){
   const sec={}; SECTIONS.forEach(s=>sec[s.k]=[0,0]); let correct=0; const items=[], recs=[];
   a.ids.forEach(id=>{const q=QBY[id]; if(!q) return; const c=a.ans[id]; const ok=c===q.a; sec[q.s][1]++; if(ok){sec[q.s][0]++;correct++}
     items.push([id,a.perm[id],c===undefined?-1:c,a.flags.includes(id)?1:0]);
-    recs.push({qid:id,r:c===undefined?2:(ok?1:0),c:c===undefined?-1:c,src:"x",t:end});});
+    // unanswered: skipped on a manual submit, incorrect when time ran out
+    recs.push({qid:id,r:c===undefined?(auto?0:2):(ok?1:0),c:c===undefined?-1:c,src:"x",t:end});});
   addExam({id:a.id,startedAt:a.startedAt,endedAt:end,timed:a.timed,limitSec:a.limitSec,n:a.n,correct,sec,items,auto:!!auto});
   setActive(null); addAttempts(recs);
   closeModal(); S.exams.view="result"; S.exams.resultId=a.id; S.exams.filter="all";
@@ -564,18 +571,19 @@ function submitExam(auto){
 }
 function renderResult(r){
   const p=pct(r.correct,r.n); const passed=p>=PASS; const f=S.exams.filter;
-  const items=r.items.map((it,i)=>({i,id:it[0],perm:it[1],c:it[2],flag:it[3]})).filter(it=>{const q=QBY[it.id]; if(!q) return false; const ok=it.c===q.a;
+  const items=r.items.map((it,i)=>({i,id:it[0],perm:it[1],c:it[2],flag:it[3],auto:r.auto})).filter(it=>{const q=QBY[it.id]; if(!q) return false; const ok=it.c===q.a;
     return f==="all"||(f==="wrong"&&!ok)||(f==="right"&&ok)||(f==="blank"&&it.c===-1)||(f==="flag"&&it.flag)});
   const wrong=r.items.filter(it=>QBY[it[0]]&&it[2]!==QBY[it[0]].a).length;
   const counts={wrong,blank:r.items.filter(it=>it[2]===-1).length,flag:r.items.filter(it=>it[3]).length};
   const secRows=SECTIONS.map(s=>{const [c,n]=(r.sec&&r.sec[s.k])||[0,0]; if(!n) return ""; const sp=pct(c,n);
     return `<div class="secrow"><span class="nm">${esc(s.name)}</span><span class="st">${c}/${n} · ${sp}%</span><div class="bar"><span style="width:${sp}%;background:${sp>=PASS?"var(--ok)":"var(--bad)"}"></span></div></div>`}).join("");
-  const filters=[["all","All",r.n],["wrong","Incorrect",counts.wrong],["right","Correct",r.n-counts.wrong],["blank","Unanswered",counts.blank],["flag","Flagged",counts.flag]];
+  const filters=[["all","All",r.n],["wrong","Incorrect",counts.wrong],["right","Correct",r.n-counts.wrong],["blank",r.auto?"Ran out of time":"Unanswered",counts.blank],["flag","Flagged",counts.flag]];
   return `<div class="wrap">
     <button class="btn ghost back-link" data-act="ex-home" style="padding:8px 4px;min-height:40px">‹ All exams</button>
-    <div class="stack" style="gap:8px"><div class="eyebrow">${fmtDT(r.endedAt)} · ${r.n} questions · ${r.timed?"Timed":"Untimed"}${r.auto?" · auto-submitted":""}</div>
+    <div class="stack" style="gap:8px"><div class="eyebrow">${fmtDT(r.endedAt)} · ${r.n} questions · ${r.timed?"Timed":"Untimed"}${r.auto?" · time ran out":""}</div>
       <div class="score"><b style="color:${passed?"var(--ok)":"var(--bad)"}">${p}%</b><span class="passbadge ${passed?"p":"f"}">${passed?"At or above "+PASS+"%":"Below "+PASS+"%"}</span></div>
-      <p class="sub" style="margin:0">${r.correct} of ${r.n} correct in ${fmtDur((r.endedAt-r.startedAt)/1000)}.</p></div>
+      <p class="sub" style="margin:0">${r.correct} of ${r.n} correct in ${fmtDur((r.endedAt-r.startedAt)/1000)}.</p>
+      ${r.auto?`<div class="form-msg err" role="status">Time ran out after ${fmtMin(r.limitSec)}. ${counts.blank?`The ${counts.blank} unanswered question${counts.blank>1?"s are":" is"} scored as incorrect and recorded as missed in your history.`:"Every question was answered."}</div>`:""}</div>
     <section class="panel stack"><h2 class="h2">By content area</h2><div class="secs">${secRows}</div></section>
     <section class="stack"><h2 class="h2">Answer key and rationales</h2>
       <div class="chips">${filters.map(([k,l,n])=>`<button class="chip" data-act="ex-filter" data-v="${k}" aria-pressed="${f===k}">${l}<span class="n">${n}</span></button>`).join("")}</div>
@@ -586,7 +594,7 @@ function renderResult(r){
 }
 function reviewItem(it){
   const q=QBY[it.id]; const perm=[...it.perm].map(Number); const ok=it.c===q.a; const blank=it.c===-1;
-  const mark=blank?`<span class="pill s">Blank</span>`:ok?`<span class="pill c">Correct</span>`:`<span class="pill i">Incorrect</span>`;
+  const mark=blank?(it.auto?`<span class="pill i">Time ran out</span>`:`<span class="pill s">Blank</span>`):ok?`<span class="pill c">Correct</span>`:`<span class="pill i">Incorrect</span>`;
   const opts=perm.map((oi,pos)=>{const cls=oi===q.a?"correct":(oi===it.c?"wrong":"dim");return `<li><div class="opt ${cls}"><span class="k">${L[pos]}</span><span>${esc(q.o[oi])}${oi===it.c?' <span style="font-size:12px;color:var(--muted)">(your answer)</span>':""}</span></div></li>`}).join("");
   return `<details><summary><span class="mono" style="font-size:13px;color:var(--muted);min-width:30px">${it.i+1}</span><span class="t">${esc(q.q)}</span>${mark}</summary>
     <div class="body"><span class="sectag" style="align-self:flex-start">${esc(SECNAME[q.s])}</span><ol class="opts">${opts}</ol><div class="rat">${esc(q.r)}</div></div></details>`;
