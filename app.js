@@ -268,7 +268,7 @@ function secStats(sec){
    ===================================================================== */
 const S = {
   tab:"study",
-  study:{view:"setup", sec:"all", pool:"all", len:"all", sess:null},
+  study:{view:"setup", mode:"quiz", sec:"all", pool:"all", len:"all", sess:null, readIds:null},
   exams:{view:"home", resultId:null, len:200, timed:true, filter:"all"},
   hist:{sec:"all", st:"all", q:"", sel:null},
   auth:{mode:"in", msg:null, busy:false}
@@ -322,25 +322,31 @@ function renderStudy(){
   const st=S.study;
   if(st.view==="card"&&st.sess) return renderCard();
   if(st.view==="done"&&st.sess) return renderStudyDone();
+  if(st.view==="read"&&st.readIds) return renderStudyRead();
+  const read=st.mode==="read";
   const counts=Object.fromEntries(["all",...SECTIONS.map(s=>s.k)].map(k=>[k,poolIds(k,st.pool).length]));
   const n=poolIds(st.sec,st.pool).length;
-  const pools=[["all","All questions","Shuffle the whole set"],["last","Missed or skipped","Your most recent attempt was wrong or skipped"],["ever","Ever missed or skipped","Wrong or skipped at least once"],["unseen","Not yet seen","Never attempted"]];
+  const pools=[["all","All questions",read?"The whole question bank":"Shuffle the whole set"],["last","Missed or skipped","Your most recent attempt was wrong or skipped"],["ever","Ever missed or skipped","Wrong or skipped at least once"],["unseen","Not yet seen","Never attempted"]];
   const pc=Object.fromEntries(pools.map(p=>[p[0],poolIds(st.sec,p[0]).length]));
   const lens=[["10","10"],["25","25"],["50","50"],["all","All"]];
   const willDo = st.len==="all"?n:Math.min(n,+st.len);
   return `<div class="wrap">
-    <div class="stack" style="gap:6px"><div class="eyebrow">Study</div><h1 class="h1">Flashcards</h1>
-    <p class="sub">Answer each card, see the rationale, and every attempt is logged to your history.</p></div>
+    <div class="stack" style="gap:6px"><div class="eyebrow">Study</div><h1 class="h1">${read?"Read and review":"Flashcards"}</h1>
+    <p class="sub">${read?"Read each question with its correct answer and rationale. Nothing to answer, and reading isn't logged to your history.":"Answer each card, see the rationale, and every attempt is logged to your history."}</p></div>
+    <section class="panel stack" aria-labelledby="l-mode"><div class="lab" id="l-mode">Mode</div>
+      <div class="choices two">${[["quiz","Flashcards","Answer multiple choice, then see the rationale"],["read","Read","Questions with answers and rationales, no quiz"]].map(([k,l,d])=>`<button class="choice" data-act="st-mode" data-v="${k}" aria-pressed="${st.mode===k}"><span><b>${l}</b><br><span style="font-size:13px;color:var(--muted)">${d}</span></span></button>`).join("")}</div>
+    </section>
     <section class="panel stack" aria-labelledby="l-sec"><div class="lab" id="l-sec">Content area</div>
       <div class="chips">${[["all","All areas"],...SECTIONS.map(s=>[s.k,s.name])].map(([k,l])=>`<button class="chip" data-act="st-sec" data-v="${k}" aria-pressed="${st.sec===k}">${esc(l)}<span class="n">${counts[k]}</span></button>`).join("")}</div>
     </section>
     <section class="panel stack" aria-labelledby="l-pool"><div class="lab" id="l-pool">Which questions</div>
       <div class="choices two">${pools.map(([k,l,d])=>`<button class="choice" data-act="st-pool" data-v="${k}" aria-pressed="${st.pool===k}" ${pc[k]===0&&st.pool!==k?"disabled":""}><span><b>${l}</b><br><span style="font-size:13px;color:var(--muted)">${d}</span></span><span class="n">${pc[k]}</span></button>`).join("")}</div>
     </section>
+    ${read?`<button class="btn primary wide" data-act="st-read" ${n?"":"disabled"} style="min-height:54px;font-size:17px">${n?`Read ${n} question${n>1?"s":""}`:"No questions match"}</button>`:`
     <section class="panel stack" aria-labelledby="l-len"><div class="lab" id="l-len">Session length</div>
       <div class="chips">${lens.map(([k,l])=>`<button class="chip" data-act="st-len" data-v="${k}" aria-pressed="${st.len===k}">${l}</button>`).join("")}</div>
     </section>
-    <button class="btn primary wide" data-act="st-start" ${willDo?"":"disabled"} style="min-height:54px;font-size:17px">${willDo?`Start ${willDo} card${willDo>1?"s":""}`:"No questions match"}</button>
+    <button class="btn primary wide" data-act="st-start" ${willDo?"":"disabled"} style="min-height:54px;font-size:17px">${willDo?`Start ${willDo} card${willDo>1?"s":""}`:"No questions match"}</button>`}
     ${masteryPanel()}
   </div>`;
 }
@@ -425,6 +431,28 @@ function studySkip(){
 function studyNext(){const s=S.study.sess; if(s.i<s.deck.length-1){s.i++;render(true)} else {S.study.view="done";render(true)}}
 function studyBack(){const s=S.study.sess; if(s.i>0){s.i--;render(true)}}
 function studyFlip(){const {e}=curCard(); if(e.res!=="c"&&e.res!=="i")return; e.flipped=!e.flipped; const c=$("#card"); if(c){c.classList.toggle("flipped",e.flipped);c.querySelector(".front").setAttribute("aria-hidden",String(e.flipped));c.querySelector(".back").setAttribute("aria-hidden",String(!e.flipped))}}
+function renderStudyRead(){
+  const ids=S.study.readIds, n=ids.length;
+  const items=ids.map((id,i)=>{ const q=QBY[id]; if(!q) return "";
+    const opts=q.o.map((t,oi)=>`<li><div class="opt ${oi===q.a?"correct":"dim"}"><span class="k">${L[oi]}</span><span>${esc(t)}</span></div></li>`).join("");
+    const dots=attempts(id).slice(-12).map(x=>`<span class="dot ${["i","c","s"][x[1]]}" title="${["Incorrect","Correct","Skipped"][x[1]]} · ${fmtDT(x[0]*1000)}"></span>`).join("");
+    return `<article class="panel stack" style="gap:12px">
+      <div class="cardmeta"><span class="sectag">${esc(SECNAME[q.s])}</span><span class="qid">${i+1} / ${n}</span></div>
+      <h2 class="stem" style="font-size:18px">${esc(q.q)}</h2>
+      <ol class="opts">${opts}</ol>
+      <div class="rat">${esc(q.r)}</div>
+      ${dots?`<div class="dots" aria-label="Your recent attempts on this question">${dots}</div>`:""}
+    </article>`}).join("");
+  const quiz=`<button class="btn" data-act="st-read-quiz">Quiz me on these ${n}</button>`;
+  return `<div class="wrap">
+    <button class="btn ghost back-link" data-act="st-new" style="padding:8px 4px;min-height:40px;align-self:flex-start">‹ Study options</button>
+    <div class="stack" style="gap:6px"><div class="eyebrow">Read and review</div><h1 class="h1">${n} question${n>1?"s":""}</h1>
+    <p class="sub">The correct answer is highlighted. Reading doesn't count as an attempt.</p></div>
+    <div class="row">${quiz}</div>
+    ${items}
+    <div class="row">${quiz}<button class="btn ghost" data-act="st-top">Back to top ↑</button></div>
+  </div>`;
+}
 function renderStudyDone(){
   const s=S.study.sess; const t={c:0,i:0,s:0}; Object.values(s.e).forEach(x=>{if(x.res)t[x.res]++});
   const unseen=s.deck.length-t.c-t.i-t.s;
@@ -764,7 +792,11 @@ document.addEventListener("click",e=>{
     case "st-end": { const s=S.study.sess; const any=s&&Object.values(s.e).some(x=>x.res); S.study.view=any?"done":"setup"; if(!any)S.study.sess=null; render(true); break; }
     case "st-redo": { const s=S.study.sess; startStudy(s.deck.filter(id=>s.e[id].res==="i"||s.e[id].res==="s")); break; }
     case "st-review": S.study.sess.i=0; S.study.view="card"; render(true); break;
-    case "st-new": S.study.sess=null; S.study.view="setup"; render(true); break;
+    case "st-new": S.study.sess=null; S.study.readIds=null; S.study.view="setup"; render(true); break;
+    case "st-mode": S.study.mode=v; render(false); break;
+    case "st-read": S.study.readIds=poolIds(S.study.sec,S.study.pool); S.study.view="read"; render(true); break;
+    case "st-read-quiz": startStudy(S.study.readIds); break;
+    case "st-top": $("#main").scrollTop=0; scrollTo(0,0); break;
     case "ex-len": S.exams.len=+v; render(false); break;
     case "ex-timed": S.exams.timed=v==="1"; render(false); break;
     case "ex-start": startExam(); break;
