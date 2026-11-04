@@ -1,6 +1,6 @@
 # RT Registry Prep
 
-An installable study app for the ARRT Radiation Therapy registry exam. It has 308 questions with rationales, flashcard study with full attempt history, and timed or untimed practice exams with an answer key.
+An installable study app for the ARRT Radiation Therapy registry exam. It has 486 questions with rationales, flashcard study with full attempt history, and timed or untimed practice exams with an answer key.
 
 - **Offline first.** Everything is saved on the device immediately, and the app works with no connection.
 - **Two accounts, one shared history.** Up to two accounts share the same data: every attempt, finished exam and the exam in progress. If one person misses a question, it shows as missed for both. Everything syncs through *your* Firebase project (free Spark plan). You can browse, export or delete them there at any time.

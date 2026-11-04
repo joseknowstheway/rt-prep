@@ -4003,5 +4003,2319 @@ window.QDATA = [
 ],
 "a": 1,
 "r": "External beam treatment does not leave radioactivity in the patient. Only certain brachytherapy implants and radiopharmaceuticals require precautions."
+},
+{
+"id": "pc-e7dcac",
+"s": "pc",
+"q": "The chemotherapy side effect characterized by a decrease in all cellular components of the blood is:",
+"o": [
+"pancytopenia",
+"neutrophilia",
+"neutropenia",
+"erythropenia"
+],
+"a": 0,
+"r": "Pancytopenia is a drop in all three blood cell lines (red cells, white cells and platelets), commonly from chemotherapy or radiation suppressing the bone marrow."
+},
+{
+"id": "pc-008f13",
+"s": "pc",
+"q": "Dysuria is:",
+"o": [
+"painful or difficult urination",
+"blood in the urine",
+"frequent urination at night",
+"inability to urinate"
+],
+"a": 0,
+"r": "Dysuria is painful or difficult urination. It is common with prostate enlargement, urinary infection and radiation cystitis during pelvic treatment."
+},
+{
+"id": "pc-9aea6a",
+"s": "pc",
+"q": "Which chemotherapy drug is known to cause hearing loss?",
+"o": [
+"vincristine",
+"cisplatin",
+"doxorubicin",
+"ifosfamide"
+],
+"a": 1,
+"r": "Cisplatin is ototoxic and can cause permanent high-frequency hearing loss and tinnitus. It is also nephrotoxic. Baseline and follow-up audiograms are common."
+},
+{
+"id": "pc-a15d16",
+"s": "pc",
+"q": "When administering iodine-based contrast, the therapist should inspect the container and use the contrast only if it is:",
+"o": [
+"expired",
+"clear",
+"viscous",
+"warm"
+],
+"a": 1,
+"r": "Contrast should be clear and free of particles or discoloration before use. Cloudy, crystallized or expired contrast must not be injected."
+},
+{
+"id": "pc-08ac70",
+"s": "pc",
+"q": "Enteric precautions must be taken when dealing with:",
+"o": [
+"vomitus",
+"fecal material",
+"blood",
+"airborne organisms"
+],
+"a": 1,
+"r": "Enteric precautions protect against pathogens spread through the fecal-oral route, such as C. difficile and hepatitis A. They require gloves and gowns when handling feces."
+},
+{
+"id": "pc-7487ce",
+"s": "pc",
+"q": "Which of the following is NOT a likely side effect of cytotoxic chemotherapy drugs?",
+"o": [
+"nausea",
+"cardiac toxicity",
+"myelosuppression",
+"stroke"
+],
+"a": 3,
+"r": "Cytotoxic chemotherapy commonly causes nausea, myelosuppression and organ toxicities such as cardiotoxicity from doxorubicin. Stroke isn't a typical direct side effect."
+},
+{
+"id": "pc-c5ed42",
+"s": "pc",
+"q": "A sign of a petit mal (absence) seizure is:",
+"o": [
+"sudden cessation of focus and response",
+"violent, jerky motions",
+"a sudden gasp or sharp vocal cry",
+"shortness of breath"
+],
+"a": 0,
+"r": "A petit mal (absence) seizure is a brief lapse in awareness: the patient suddenly stops, stares and doesn't respond for a few seconds, often with no convulsions. Violent jerking and a sudden cry are signs of a grand mal (tonic-clonic) seizure."
+},
+{
+"id": "pc-10e820",
+"s": "pc",
+"q": "During contrast injection for CT simulation, a patient complains of difficulty breathing and feeling faint. He is most likely experiencing:",
+"o": [
+"moderate symptoms of anaphylactic shock",
+"minor symptoms of respiratory distress",
+"minor symptoms of depression",
+"major symptoms of claustrophobia"
+],
+"a": 0,
+"r": "Difficulty breathing and feeling faint after contrast suggest a moderate anaphylactoid reaction. Stop the injection, call for help and monitor vital signs. Epinephrine may be needed if it progresses."
+},
+{
+"id": "pc-3c5db9",
+"s": "pc",
+"q": "The five rights of drug administration include all of the following EXCEPT the right:",
+"o": [
+"dose",
+"patient",
+"drug",
+"sequence"
+],
+"a": 3,
+"r": "The five rights of drug administration are right patient, right drug, right dose, right time and right route. Sequence isn't one of them."
+},
+{
+"id": "pc-9b4448",
+"s": "pc",
+"q": "The lithotomy position is appropriate for examining the:",
+"o": [
+"oral cavity",
+"perineal area",
+"biliary tree",
+"axillary lymph nodes"
+],
+"a": 1,
+"r": "In the lithotomy position, the patient lies supine with hips and knees flexed and the legs supported in stirrups. It exposes the perineum for gynecologic exams and procedures such as brachytherapy."
+},
+{
+"id": "pc-3c4f88",
+"s": "pc",
+"q": "A dizzy feeling on sitting up or standing after prolonged bed rest is called:",
+"o": [
+"vertigo",
+"decubitus seizure",
+"postural hypotension",
+"decubitus ulcer"
+],
+"a": 2,
+"r": "Postural (orthostatic) hypotension is a drop in blood pressure on sitting or standing, especially after prolonged bed rest, causing dizziness. Have patients sit up slowly before standing."
+},
+{
+"id": "pc-f75fd0",
+"s": "pc",
+"q": "A deficiency in the number of circulating white blood cells is called:",
+"o": [
+"thrombocytopenia",
+"leukoplakia",
+"leukopenia",
+"pancytopenia"
+],
+"a": 2,
+"r": "Leukopenia is a low white blood cell count, which raises the risk of infection. Thrombocytopenia is low platelets, and pancytopenia is low counts in all cell lines."
+},
+{
+"id": "pc-144ebf",
+"s": "pc",
+"q": "A chemical substance used to kill pathogens on equipment is called: 1. disinfectant  2. antiseptic  3. antibiotic",
+"o": [
+"1",
+"2",
+"3",
+"1, 2 and 3"
+],
+"a": 0,
+"r": "Disinfectants are chemicals used to kill pathogens on objects and surfaces. Antiseptics are used on skin and tissue, and antibiotics treat bacterial infections in the body."
+},
+{
+"id": "pc-954582",
+"s": "pc",
+"q": "Systolic pressure represents the:",
+"o": [
+"highest pressure, reached during contraction of the ventricles",
+"lowest pressure, during relaxation of the ventricles",
+"highest pressure, reached during contraction of the aorta",
+"lowest pressure, during relaxation of the aorta"
+],
+"a": 0,
+"r": "Systolic pressure is the peak arterial pressure during contraction of the ventricles. Diastolic pressure is the lowest pressure, during ventricular relaxation."
+},
+{
+"id": "pc-1ae2e0",
+"s": "pc",
+"q": "General signs and symptoms of shock include all of the following EXCEPT:",
+"o": [
+"weak, thready pulse",
+"rapid heartbeat",
+"increased temperature",
+"hypotension"
+],
+"a": 2,
+"r": "Shock causes a weak, rapid (thready) pulse, low blood pressure and cool, clammy skin. Body temperature is usually normal or low, not raised."
+},
+{
+"id": "pc-6180fb",
+"s": "pc",
+"q": "When helping a patient who has had a stroke, you should position yourself:",
+"o": [
+"in front",
+"behind",
+"on the patient's weak side",
+"on the patient's strong side"
+],
+"a": 2,
+"r": "After a stroke, stand on the patient's weak (affected) side so you can support it and prevent a fall toward that side during transfers or walking."
+},
+{
+"id": "pc-03ae01",
+"s": "pc",
+"q": "Syncope is another name for:",
+"o": [
+"fainting",
+"seizure",
+"stroke",
+"heart attack"
+],
+"a": 0,
+"r": "Syncope is a temporary loss of consciousness (fainting) caused by reduced blood flow to the brain."
+},
+{
+"id": "pc-2d5113",
+"s": "pc",
+"q": "Epistaxis is another name for:",
+"o": [
+"seizure",
+"fainting",
+"nosebleed",
+"vomiting"
+],
+"a": 2,
+"r": "Epistaxis is a nosebleed. Have the patient sit up, lean forward and pinch the soft part of the nose."
+},
+{
+"id": "pc-4e3b22",
+"s": "pc",
+"q": "For a patient experiencing syncope, you should:",
+"o": [
+"begin the Heimlich maneuver",
+"help the patient lie down and elevate the feet",
+"help the patient lie down and raise the head",
+"use the AED"
+],
+"a": 1,
+"r": "For a patient who faints, help them lie flat and raise the legs. This returns blood to the brain. Check breathing and pulse, and call for help if they don't recover quickly."
+},
+{
+"id": "pc-613dfd",
+"s": "pc",
+"q": "Mucositis is most likely to occur in which of the following conditions?",
+"o": [
+"basal cell carcinoma",
+"bladder carcinoma",
+"breast carcinoma",
+"leukemia"
+],
+"a": 3,
+"r": "Mucositis is inflammation of the mucous membranes of the mouth and GI tract. It is common with the intensive chemotherapy used for leukemia, and with head and neck radiation."
+},
+{
+"id": "pc-05a881",
+"s": "pc",
+"q": "The average diastolic pressure in an adult is (mm Hg):",
+"o": [
+"80-100",
+"60-90",
+"50-100",
+"110-140"
+],
+"a": 1,
+"r": "Normal adult diastolic pressure is about 60-90 mm Hg (ideally under 80). Normal systolic pressure is about 90-120 mm Hg."
+},
+{
+"id": "pc-412ce8",
+"s": "pc",
+"q": "The medication used to reduce the risk of clot formation is:",
+"o": [
+"Inderal",
+"epinephrine",
+"heparin",
+"Zofran"
+],
+"a": 2,
+"r": "Heparin is an anticoagulant used to prevent clots, including flushing IV and port lines. Inderal is a beta blocker, epinephrine treats anaphylaxis, and Zofran is an antiemetic."
+},
+{
+"id": "pc-bac3c4",
+"s": "pc",
+"q": "125 pounds is equivalent to how many kilograms?",
+"o": [
+"276",
+"57",
+"125",
+"63"
+],
+"a": 1,
+"r": "1 kg = 2.2 lb, so 125 lb / 2.2 = about 57 kg."
+},
+{
+"id": "pc-ab19cc",
+"s": "pc",
+"q": "The normal adult range for BUN (mg/dL) is:",
+"o": [
+"10-20",
+"30-40",
+"60-80",
+"100-110"
+],
+"a": 0,
+"r": "Normal blood urea nitrogen is about 10-20 mg/dL (often quoted as 7-20). Raised BUN suggests poor kidney function or dehydration, which matters before giving contrast or nephrotoxic drugs."
+},
+{
+"id": "pc-90439d",
+"s": "pc",
+"q": "The lumen size of a urinary catheter is expressed in:",
+"o": [
+"cc",
+"mL",
+"gauge",
+"French"
+],
+"a": 3,
+"r": "Catheter lumen size is measured on the French scale, where 1 French = 1/3 mm in outer diameter. The lower the French number, the smaller the catheter."
+},
+{
+"id": "pc-e9bb08",
+"s": "pc",
+"q": "The way a drug interacts with the body to produce its intended effect is called its:",
+"o": [
+"metabolism",
+"rate of absorption",
+"mechanism of action",
+"half-life"
+],
+"a": 2,
+"r": "A drug's mechanism of action is how it interacts with the body (e.g., binding a receptor or blocking an enzyme) to produce its effect. Metabolism, absorption and half-life describe how the body handles the drug."
+},
+{
+"id": "pc-b2fce8",
+"s": "pc",
+"q": "Nutrition that bypasses the gastrointestinal tract and delivers nutrients into the veins is called:",
+"o": [
+"enteral",
+"parenteral",
+"gastrostomy",
+"nasogastric"
+],
+"a": 1,
+"r": "Parenteral nutrition (e.g., TPN) delivers nutrients directly into the veins, bypassing the GI tract. Enteral nutrition uses the GI tract, by mouth or through a feeding tube."
+},
+{
+"id": "pc-bb1a04",
+"s": "pc",
+"q": "Malnutrition and wasting caused by a physiological change or malfunction (such as cancer) is called:",
+"o": [
+"anorexia",
+"bulimia",
+"cachexia",
+"emaciation"
+],
+"a": 2,
+"r": "Cachexia is the wasting syndrome of advanced cancer and other diseases. It causes loss of weight, muscle and fat that eating can't reverse, because of metabolic changes caused by the disease."
+},
+{
+"id": "pc-a1eaae",
+"s": "pc",
+"q": "The drug Decadron (dexamethasone) is used to decrease:",
+"o": [
+"pain",
+"erythema",
+"diarrhea",
+"inflammation"
+],
+"a": 3,
+"r": "Decadron (dexamethasone) is a corticosteroid that reduces inflammation and swelling. It is used especially for cerebral edema from brain tumors or metastases, and for spinal cord compression."
+},
+{
+"id": "pc-c22822",
+"s": "pc",
+"q": "Normal rectal temperature (°F) is about:",
+"o": [
+"98.6",
+"99.6",
+"97.0",
+"96.0"
+],
+"a": 1,
+"r": "Normal rectal temperature is about 99.6 F, about 1 degree higher than oral temperature (98.6 F). Axillary temperature is about 1 degree lower than oral."
+},
+{
+"id": "pc-12a5b7",
+"s": "pc",
+"q": "The volume percentage of red blood cells in whole blood is the:",
+"o": [
+"erythrocyte count",
+"leukocyte count",
+"hematocrit",
+"hemoglobin"
+],
+"a": 2,
+"r": "Hematocrit is the percentage of whole blood volume made up of red blood cells. It is normally about 40-54% in men and 37-47% in women."
+},
+{
+"id": "pc-cc4ea2",
+"s": "pc",
+"q": "Which pathogen commonly causes infection in cancer patients?",
+"o": [
+"Pseudomonas",
+"Streptococci",
+"Staphylococci",
+"hepatitis B"
+],
+"a": 0,
+"r": "Pseudomonas aeruginosa is a common opportunistic, often hospital-acquired, bacterial infection in immunocompromised cancer patients, especially those with neutropenia."
+},
+{
+"id": "pc-0165a6",
+"s": "pc",
+"q": "Patients receiving skin irradiation should be told to avoid ______ because it repels, rather than attracts, moisture to the skin.",
+"o": [
+"petroleum jelly",
+"lanolin-based products",
+"water-based products",
+"mild soap"
+],
+"a": 0,
+"r": "Patients should avoid applying petroleum jelly to irradiated skin. It is occlusive and repels rather than attracts moisture, and a thick layer can act as bolus and increase skin dose."
+},
+{
+"id": "pc-c72ddb",
+"s": "pc",
+"q": "Contact with secretions spread by sneezing, coughing or talking is an example of which type of transmission?",
+"o": [
+"direct",
+"indirect",
+"droplet",
+"airborne"
+],
+"a": 2,
+"r": "Droplet transmission spreads pathogens in large respiratory droplets from coughing, sneezing or talking, over short distances (about 3-6 feet). Droplet precautions require a surgical mask."
+},
+{
+"id": "pc-37ea1b",
+"s": "pc",
+"q": "The most common nosocomial infections are:",
+"o": [
+"bloodborne infections",
+"respiratory tract infections",
+"wound infections",
+"urinary tract infections"
+],
+"a": 3,
+"r": "Urinary tract infections are classically the most common nosocomial (hospital-acquired) infections, often linked to indwelling urinary catheters."
+},
+{
+"id": "pc-433a66",
+"s": "pc",
+"q": "A patient with a bacterial infection may have an elevated temperature caused by ______ released by the bacteria.",
+"o": [
+"antigens",
+"antibodies",
+"immunoglobulins",
+"pyrogens (pyrotoxins)"
+],
+"a": 3,
+"r": "Fever results from pyrogens, fever-inducing substances released by bacteria (exogenous pyrogens such as endotoxin) or by the body's immune cells. They reset the hypothalamic thermostat."
+},
+{
+"id": "pc-dcd105",
+"s": "pc",
+"q": "Afebrile means:",
+"o": [
+"elevated temperature",
+"normal body temperature",
+"elevated titers to staphylococcus",
+"no titers to staphylococcus"
+],
+"a": 1,
+"r": "Afebrile means without fever, at normal body temperature. Febrile means having a fever."
+},
+{
+"id": "pc-51466c",
+"s": "pc",
+"q": "Which dental reaction is common when irradiating the oral cavity?",
+"o": [
+"neuropathy",
+"plaque",
+"caries",
+"discoloration"
+],
+"a": 2,
+"r": "Radiation to the oral cavity reduces saliva (xerostomia), which leads to radiation caries (rapid tooth decay). Pre-treatment dental evaluation and fluoride treatments help prevent it."
+},
+{
+"id": "pc-f0baf9",
+"s": "pc",
+"q": "The cardinal signs of inflammation include: 1. pain  2. heat  3. redness  4. itching",
+"o": [
+"1 and 3",
+"3 and 4",
+"1, 2 and 3",
+"1, 3 and 4"
+],
+"a": 2,
+"r": "The cardinal signs of inflammation are redness (rubor), heat (calor), pain (dolor), swelling (tumor) and loss of function. Itching isn't one of them."
+},
+{
+"id": "pr-072bf2",
+"s": "pr",
+"q": "Orthovoltage machines operate in the range of:",
+"o": [
+"10-40 kV",
+"100 kV",
+"100-200 kV",
+"150-500 kV"
+],
+"a": 3,
+"r": "Orthovoltage (deep) therapy units operate at about 150-500 kV. Superficial units run at about 50-150 kV and contact therapy at 40-50 kV. Megavoltage units start at about 1 MV."
+},
+{
+"id": "pr-9d9efb",
+"s": "pr",
+"q": "0.01 J/kg is equivalent to:",
+"o": [
+"1 roentgen",
+"1 rad",
+"1 Gy",
+"1 Bq"
+],
+"a": 1,
+"r": "1 Gy = 1 J/kg = 100 rad, so 0.01 J/kg is 1 rad (1 cGy). The roentgen measures exposure in air, and the becquerel measures activity."
+},
+{
+"id": "pr-994f89",
+"s": "pr",
+"q": "The unit of exposure in air is the:",
+"o": [
+"roentgen",
+"Planck",
+"curie",
+"rem"
+],
+"a": 0,
+"r": "The roentgen measures exposure, the ionization produced by x- or gamma rays in air (2.58 x 10^-4 C/kg). Its SI equivalent is the coulomb per kilogram."
+},
+{
+"id": "pr-b57006",
+"s": "pr",
+"q": "The basic types of interaction between x-rays and matter include all of the following EXCEPT:",
+"o": [
+"Compton scatter",
+"radiative bremsstrahlung production",
+"photoelectric absorption",
+"pair production"
+],
+"a": 1,
+"r": "The main photon interactions are coherent scatter, photoelectric absorption, Compton scatter, pair production and photodisintegration. Bremsstrahlung comes from charged particles (electrons) slowing near nuclei, not from photon interactions."
+},
+{
+"id": "pr-057e6b",
+"s": "pr",
+"q": "What is the SI unit of exposure (traditional unit: roentgen)?",
+"o": [
+"coulomb per kilogram of air",
+"gray",
+"sievert",
+"becquerel"
+],
+"a": 0,
+"r": "The SI unit of exposure is the coulomb per kilogram of air. 1 R = 2.58 x 10^-4 C/kg. The gray measures absorbed dose, the sievert dose equivalent and the becquerel activity."
+},
+{
+"id": "pr-bad5c5",
+"s": "pr",
+"q": "The prodromal stage of acute radiation syndrome consists of:",
+"o": [
+"nausea",
+"fatigue",
+"leukopenia",
+"bleeding"
+],
+"a": 0,
+"r": "The prodromal stage of acute radiation syndrome begins within hours of exposure, with nausea, vomiting and anorexia. Leukopenia and bleeding appear later, in the manifest illness stage."
+},
+{
+"id": "pr-022d9f",
+"s": "pr",
+"q": "Two or more nuclides with the same atomic and mass numbers but different nuclear energy states are known as:",
+"o": [
+"isomers",
+"isotopes",
+"isobars",
+"isotones"
+],
+"a": 0,
+"r": "Nuclear isomers have the same atomic number and mass number but exist in different nuclear energy states, such as Tc-99m and Tc-99. Isotopes share Z, isobars share A, and isotones share N."
+},
+{
+"id": "pr-47ad91",
+"s": "pr",
+"q": "Wavelengths of x-rays are measured in:",
+"o": [
+"mm",
+"cm",
+"roentgens",
+"angstroms"
+],
+"a": 3,
+"r": "X-ray wavelengths are extremely short and are expressed in angstroms (1 A = 10^-10 m) or nanometers. Diagnostic and therapy x-rays are well below 1 A."
+},
+{
+"id": "pr-e89db8",
+"s": "pr",
+"q": "As the wavelength of light is decreased, its speed is:",
+"o": [
+"increased linearly",
+"decreased linearly",
+"unchanged",
+"increased exponentially"
+],
+"a": 2,
+"r": "All electromagnetic radiation travels at the speed of light (3 x 10^8 m/s) in a vacuum, whatever its wavelength. Shorter wavelength means higher frequency and energy, not higher speed."
+},
+{
+"id": "pr-1a4421",
+"s": "pr",
+"q": "An increase in the number of cells through cell growth and division is called:",
+"o": [
+"mitosis",
+"meiosis",
+"differentiation",
+"proliferation"
+],
+"a": 3,
+"r": "Proliferation is an increase in cell number through growth and division. Differentiation is the maturation of cells into specialized types. Mitosis and meiosis are specific types of cell division."
+},
+{
+"id": "pr-c93778",
+"s": "pr",
+"q": "The quality (radiation weighting) factor for gamma radiation is:",
+"o": [
+"10",
+"20",
+"5",
+"1"
+],
+"a": 3,
+"r": "The quality factor (radiation weighting factor) is 1 for x-rays, gamma rays and electrons. It is higher for densely ionizing radiation: about 20 for alpha particles and 5-20 for neutrons, depending on energy."
+},
+{
+"id": "pr-628882",
+"s": "pr",
+"q": "LET is measured in units of:",
+"o": [
+"J/kg",
+"keV/µm",
+"J/keV",
+"C/kg"
+],
+"a": 1,
+"r": "Linear energy transfer is the energy deposited per unit length of track, expressed in keV per micrometer. Low-LET x-rays deposit about 2 keV/um; high-LET alpha particles deposit over 100 keV/um."
+},
+{
+"id": "pr-e2a7d1",
+"s": "pr",
+"q": "Radon is a natural radioactive gas with a half-life of about:",
+"o": [
+"4 minutes",
+"4 hours",
+"4 days",
+"4 months"
+],
+"a": 2,
+"r": "Radon-222 is a naturally occurring radioactive gas from the uranium decay series, with a half-life of about 3.8 days. It is the largest source of natural background dose."
+},
+{
+"id": "pr-fe5f43",
+"s": "pr",
+"q": "During x-ray production, the process by which electrons are liberated at the cathode is known as:",
+"o": [
+"thermionic emission",
+"photoelectric effect",
+"bremsstrahlung effect",
+"Compton effect"
+],
+"a": 0,
+"r": "In thermionic emission, the heated tungsten filament of the cathode boils off electrons, which are then accelerated toward the anode to produce x-rays."
+},
+{
+"id": "pr-c3b8f0",
+"s": "pr",
+"q": "How many joules are in 1 electron volt?",
+"o": [
+"1.6 x 10^-13 J",
+"1.6 x 10^-19 J",
+"1.6 x 10^13 J",
+"1.6 x 10^19 J"
+],
+"a": 1,
+"r": "One electron volt is the energy an electron gains crossing a 1-volt potential difference: 1.6 x 10^-19 J. 1 MeV is 1.6 x 10^-13 J."
+},
+{
+"id": "pr-8a5e71",
+"s": "pr",
+"q": "Which theory of radiation interaction underlies the operating principle of an ionization chamber?",
+"o": [
+"Bragg-Gray cavity theory",
+"Spencer-Attix theory",
+"Burlin cavity theory",
+"common theory"
+],
+"a": 0,
+"r": "Bragg-Gray cavity theory relates the ionization in a small gas-filled cavity to the dose in the surrounding medium. It is the basis for converting an ion chamber reading to absorbed dose."
+},
+{
+"id": "pr-6b37e4",
+"s": "pr",
+"q": "The use of iodine or barium contrast in CT scanning exploits the:",
+"o": [
+"photoelectric effect",
+"Compton effect",
+"pair production",
+"photodisintegration"
+],
+"a": 0,
+"r": "The photoelectric effect depends strongly on atomic number (about Z^3). High-Z iodine and barium absorb far more x-rays than soft tissue, which makes contrast-filled structures stand out."
+},
+{
+"id": "pr-4e296a",
+"s": "pr",
+"q": "Which photon energy is detected by PET?",
+"o": [
+"5.11 MeV",
+"1.022 MeV",
+"0.511 keV",
+"511 keV"
+],
+"a": 3,
+"r": "PET detects the pair of 511 keV photons emitted in opposite directions when a positron annihilates with an electron. The scanner records them in coincidence to locate the emitting tissue."
+},
+{
+"id": "pr-7e1a99",
+"s": "pr",
+"q": "In a linear accelerator, which device spreads the beam into a uniform field for photons and for electrons?",
+"o": [
+"photons: flattening filter; electrons: scattering foil",
+"photons: scattering foil; electrons: flattening filter",
+"flattening filter for both",
+"scattering foil for both"
+],
+"a": 0,
+"r": "For photon beams, a flattening filter evens out the forward-peaked bremsstrahlung beam. For electron beams, the target and flattening filter are moved out, and a scattering foil spreads the narrow electron beam across the field."
+},
+{
+"id": "pr-02decc",
+"s": "pr",
+"q": "The half-life of radium-226 is about:",
+"o": [
+"30 years",
+"74 days",
+"1,600 years",
+"4.5 billion years"
+],
+"a": 2,
+"r": "Radium-226 has a half-life of about 1,600 years. That long half-life made it the original brachytherapy source, though it has since been replaced by safer isotopes."
+},
+{
+"id": "pr-3121c4",
+"s": "pr",
+"q": "The half-life of cesium-137 is about:",
+"o": [
+"30 years",
+"5.26 years",
+"74 days",
+"1,600 years"
+],
+"a": 0,
+"r": "Cesium-137 has a half-life of about 30 years and emits 0.662 MeV gamma rays. It was widely used for LDR intracavitary gynecologic brachytherapy."
+},
+{
+"id": "pr-c8b320",
+"s": "pr",
+"q": "The half-life of iridium-192 is about:",
+"o": [
+"17 days",
+"60 days",
+"74 days",
+"2.7 days"
+],
+"a": 2,
+"r": "Iridium-192 has a half-life of about 74 days, which is why HDR afterloader sources are replaced about every 3-4 months."
+},
+{
+"id": "pr-3625cf",
+"s": "pr",
+"q": "The half-life of gold-198 is about:",
+"o": [
+"6 hours",
+"2.7 days",
+"17 days",
+"60 days"
+],
+"a": 1,
+"r": "Gold-198 has a half-life of about 2.7 days and emits 0.412 MeV gamma rays. It has been used for permanent interstitial seed implants."
+},
+{
+"id": "pr-7e9f49",
+"s": "pr",
+"q": "A high-energy photon strikes an orbital electron and scatters at 180 degrees. What is the maximum energy of the scattered photon?",
+"o": [
+"511 keV",
+"1 MeV",
+"255 keV",
+"0.511 MeV"
+],
+"a": 2,
+"r": "In Compton scatter, a photon scattered back at 180 degrees retains at most about 255 keV, however high its initial energy (the 90-degree limit is 511 keV). This is why backscatter is low in energy."
+},
+{
+"id": "pr-86f9a7",
+"s": "pr",
+"q": "Photon production from a diagnostic x-ray tube requires:",
+"o": [
+"alternating current",
+"direct current",
+"voltage potential",
+"B and C"
+],
+"a": 3,
+"r": "An x-ray tube needs a high-voltage potential to accelerate electrons, and current that flows in one direction (direct, or rectified, current) so electrons always travel from cathode to anode."
+},
+{
+"id": "pr-2feaa9",
+"s": "pr",
+"q": "What is the advantage of a rotating anode over a stationary anode in an x-ray tube?",
+"o": [
+"larger exposures are possible without overheating the tube",
+"it produces a larger focal spot",
+"it requires a lower kVp",
+"it eliminates the need for tube cooling"
+],
+"a": 0,
+"r": "A rotating anode spreads the heat from the electron beam over a large, ring-shaped focal track instead of a single spot. This allows much larger exposures (higher mA) without overheating."
+},
+{
+"id": "pr-c05771",
+"s": "pr",
+"q": "Which is true about beta-plus (positron) decay?",
+"o": [
+"a proton is converted to a neutron",
+"a neutron is converted to a proton",
+"an electron is captured from outside the nucleus and a neutron is converted into a proton",
+"it requires 0.511 MeV of transition energy"
+],
+"a": 0,
+"r": "In beta-plus (positron) decay, a proton in a proton-rich nucleus becomes a neutron, emitting a positron and a neutrino. The atomic number drops by one. It needs at least 1.022 MeV of transition energy, not 0.511 MeV."
+},
+{
+"id": "pr-5572d9",
+"s": "pr",
+"q": "When protons interact with matter:",
+"o": [
+"the rate of ionization increases as the proton slows",
+"most of their energy is given off as bremsstrahlung",
+"they recoil from nuclei",
+"A and B"
+],
+"a": 0,
+"r": "Protons lose energy mainly through ionization and excitation. The rate of energy loss increases as they slow down, producing the Bragg peak near the end of their range. Their large mass makes bremsstrahlung negligible."
+},
+{
+"id": "pr-11a651",
+"s": "pr",
+"q": "Kinetic energy lost per unit path length is referred to as:",
+"o": [
+"stopping power",
+"LET",
+"KERMA",
+"mass attenuation coefficient"
+],
+"a": 0,
+"r": "Stopping power is the kinetic energy a charged particle loses per unit path length (e.g., MeV/cm). LET is the energy absorbed locally along the track. KERMA is the kinetic energy released per unit mass."
+},
+{
+"id": "pr-ca0428",
+"s": "pr",
+"q": "What is Planck's constant?",
+"o": [
+"6.022 x 10^23",
+"1.6 x 10^-19",
+"6.62 x 10^-34",
+"3 x 10^8"
+],
+"a": 2,
+"r": "Planck's constant is 6.62 x 10^-34 J*s. It relates photon energy to frequency (E = hf). 6.022 x 10^23 is Avogadro's number and 3 x 10^8 m/s is the speed of light."
+},
+{
+"id": "pr-0750c1",
+"s": "pr",
+"q": "Cellular radiosensitivity is ______ proportional to the rate of cell division and ______ proportional to the degree of cell differentiation.",
+"o": [
+"directly, directly",
+"inversely, inversely",
+"inversely, directly",
+"directly, inversely"
+],
+"a": 3,
+"r": "The law of Bergonie and Tribondeau says radiosensitivity is directly proportional to the rate of cell division (and future divisions), and inversely proportional to the degree of differentiation. Rapidly dividing, undifferentiated cells are the most sensitive."
+},
+{
+"id": "pr-87aa5e",
+"s": "pr",
+"q": "Which therapeutic ratio would be expected to give the highest probability of cure?",
+"o": [
+"0.85",
+"1.0",
+"1.45",
+"1.75"
+],
+"a": 3,
+"r": "The therapeutic ratio compares normal tissue tolerance to the dose needed to control the tumor. The further it is above 1, the better the chance of cure without unacceptable complications."
+},
+{
+"id": "pr-41c2f9",
+"s": "pr",
+"q": "The electrons contaminating high-energy photon beams may come from photon interactions with the:",
+"o": [
+"room air",
+"collimators",
+"bolus",
+"Lucite trays"
+],
+"a": 1,
+"r": "Electron contamination in megavoltage photon beams comes mainly from photon interactions in the collimators, flattening filter and air in the beam path. It adds to the surface dose."
+},
+{
+"id": "pr-0ee375",
+"s": "pr",
+"q": "A prescription of 50 Gy total is equivalent to how many rad?",
+"o": [
+"0.50",
+"50",
+"500",
+"5000"
+],
+"a": 3,
+"r": "1 Gy = 100 rad, so 50 Gy = 5,000 rad (5,000 cGy)."
+},
+{
+"id": "pr-8b79d1",
+"s": "pr",
+"q": "Reducing the overall treatment time without changing the total dose is known as:",
+"o": [
+"hypofractionation",
+"accelerated fractionation",
+"protraction",
+"elapsed day reduction"
+],
+"a": 1,
+"r": "Accelerated fractionation shortens the overall treatment time while keeping the total dose about the same (e.g., more than one fraction a day), to limit tumor repopulation."
+},
+{
+"id": "pq-dac2fe",
+"s": "pq",
+"q": "A pocket dosimeter is a:",
+"o": [
+"low energy dosimeter",
+"thermoluminescent dosimeter",
+"cutie pie survey meter",
+"small, direct-reading ionization chamber"
+],
+"a": 3,
+"r": "A pocket dosimeter is a pen-sized ionization chamber that is charged and then read directly against an internal scale. It gives an immediate reading, unlike a film badge or TLD."
+},
+{
+"id": "pq-1be34b",
+"s": "pq",
+"q": "The traditional unit of dose equivalent is the:",
+"o": [
+"rem",
+"rad",
+"roentgen",
+"RBE"
+],
+"a": 0,
+"r": "The rem (roentgen equivalent man) is the traditional unit of dose equivalent: absorbed dose (rad) times the quality factor. Its SI counterpart is the sievert (1 Sv = 100 rem)."
+},
+{
+"id": "pq-88bd4a",
+"s": "pq",
+"q": "The annual dose limit for occupational exposure is:",
+"o": [
+"5 rem",
+"15 rem",
+"30 rem",
+"50 rem"
+],
+"a": 0,
+"r": "The annual occupational whole-body (effective) dose limit is 50 mSv (5 rem). 50 rem (500 mSv) is the annual limit for skin and extremities, not the whole body."
+},
+{
+"id": "pq-336b00",
+"s": "pq",
+"q": "The annual dose limit for the general public is:",
+"o": [
+"0.1 rem",
+"0.5 rem",
+"1 rem",
+"5 rem"
+],
+"a": 0,
+"r": "Members of the general public are limited to 1 mSv (0.1 rem) per year from licensed sources, one-fiftieth of the occupational limit."
+},
+{
+"id": "pq-3197ff",
+"s": "pq",
+"q": "When a patient is treated with iodine-131, the room should be labeled:",
+"o": [
+"High radiation - grave danger",
+"Caution: radioactive materials",
+"Caution: high dose radiation",
+"Do not enter: radiation at excessive levels"
+],
+"a": 1,
+"r": "A room holding a patient treated with radioactive iodine contains radioactive material, so NRC rules require the posting \"Caution: Radioactive Material(s)\". The other wordings aren't standard NRC postings."
+},
+{
+"id": "pq-13d56e",
+"s": "pq",
+"q": "To correct an ionization chamber reading for air density, which of the following must be measured? 1. barometric pressure  2. volume of the chamber  3. temperature  4. beam energy",
+"o": [
+"1 and 3",
+"1, 2 and 3",
+"2 and 4",
+"1, 2, 3 and 4"
+],
+"a": 0,
+"r": "An open (vented) ion chamber's reading depends on the mass of air in it, which changes with air density. The temperature-pressure correction P_TP needs only the measured temperature and barometric pressure."
+},
+{
+"id": "pq-d76c5a",
+"s": "pq",
+"q": "For a controlled area, shielding must be sufficient to reduce exposure to no more than:",
+"o": [
+"1 mrem/hr",
+"10 mrem/hr",
+"1 mrem/week",
+"100 mrem/week"
+],
+"a": 3,
+"r": "Under traditional NCRP 49 shielding design, a controlled area is shielded to no more than 100 mrem (1 mSv) per week. Uncontrolled areas use a much lower limit."
+},
+{
+"id": "pq-6564ad",
+"s": "pq",
+"q": "Light field and radiation field congruence should be checked:",
+"o": [
+"daily",
+"monthly",
+"weekly",
+"semiannually"
+],
+"a": 1,
+"r": "AAPM TG-142 lists light field and radiation field coincidence as a monthly mechanical QA test, with a tolerance of 2 mm or 1% per side."
+},
+{
+"id": "pq-681894",
+"s": "pq",
+"q": "The most convenient and economical method of whole-body personnel monitoring is the:",
+"o": [
+"pocket dosimeter",
+"film badge",
+"TLD",
+"Geiger counter"
+],
+"a": 1,
+"r": "Film badges were the most convenient and economical whole-body personnel monitors: cheap, mailable and a permanent record. TLDs and OSL badges now serve the same role."
+},
+{
+"id": "pq-6004e4",
+"s": "pq",
+"q": "A radiation level reaching 60 mrem/hr is classified as a:",
+"o": [
+"radiation area",
+"high radiation area",
+"very high radiation area",
+"dangerous radiation area"
+],
+"a": 0,
+"r": "A radiation area exceeds 5 mrem/hr (0.05 mSv/hr) at 30 cm, and a high radiation area exceeds 100 mrem/hr. 60 mrem/hr is therefore a radiation area."
+},
+{
+"id": "pq-01abd8",
+"s": "pq",
+"q": "When radiation interacts with the film in a film badge, after development:",
+"o": [
+"the film darkens in proportion to the exposure",
+"the film lightens in proportion to the exposure",
+"the film shows artifacts in proportion to the exposure",
+"the film must be exposed to a charged field for interpretation"
+],
+"a": 0,
+"r": "Radiation exposes the silver halide in the badge film, and after development the film's optical density (darkening) is proportional to the exposure received."
+},
+{
+"id": "pq-4f7351",
+"s": "pq",
+"q": "According to AAPM TG-66, the couch indexing and positional accuracy of a CT simulator should be within:",
+"o": [
+"±1 mm",
+"±2 mm",
+"±5 mm",
+"±1 cm"
+],
+"a": 0,
+"r": "AAPM TG-66 calls for CT simulator couch indexing and position accuracy within +/-1 mm. The tolerance for the external positioning lasers is +/-2 mm."
+},
+{
+"id": "pq-aa4c7d",
+"s": "pq",
+"q": "Beam symmetry and flatness are defined over what percentage of the field?",
+"o": [
+"30%",
+"50%",
+"80%",
+"100%"
+],
+"a": 2,
+"r": "Flatness and symmetry are evaluated over the central 80% of the field width, at a reference depth, because the penumbra region at the edges would distort the measurement."
+},
+{
+"id": "pq-5e233d",
+"s": "pq",
+"q": "REM stands for:",
+"o": [
+"roentgen equivalent man",
+"radiation exposure measurement",
+"relative energy of mass",
+"roentgen emission maximum"
+],
+"a": 0,
+"r": "Rem stands for roentgen equivalent man, the traditional unit of dose equivalent. It accounts for the biological effectiveness of different radiation types."
+},
+{
+"id": "pq-9ca5ef",
+"s": "pq",
+"q": "What is the purpose of the maze in the shielding design of a vault?",
+"o": [
+"shield therapists outside the vault",
+"prevent the direct beam from striking the door",
+"make use of leftover concrete",
+"prevent therapists from entering too quickly while scattered radiation is still present"
+],
+"a": 1,
+"r": "The maze is an extra corridor at the vault entrance. It keeps the direct beam from reaching the door and forces scattered radiation to scatter several more times before reaching it, so the door can be thinner."
+},
+{
+"id": "pq-dcd510",
+"s": "pq",
+"q": "In one month, the output of a cobalt-60 machine decreases by about:",
+"o": [
+"0.1%",
+"1%",
+"2%",
+"5%"
+],
+"a": 1,
+"r": "Cobalt-60 has a half-life of 5.26 years, so its output drops about 1.1% per month. Treatment time calculations must be updated for decay regularly."
+},
+{
+"id": "tp-1dbec2",
+"s": "tp",
+"q": "Which radiation measuring device is appropriate for verifying dose calculations at specific points in a treatment field?",
+"o": [
+"ion chamber",
+"film badge",
+"pocket dosimeter",
+"thermoluminescent dosimeter"
+],
+"a": 3,
+"r": "TLDs (lithium fluoride chips) are small, nearly tissue-equivalent and can be placed on or in the patient to verify dose at specific points, such as in-vivo dosimetry."
+},
+{
+"id": "tp-06f58e",
+"s": "tp",
+"q": "The physical field size is defined at the ____% isodose line.",
+"o": [
+"90",
+"100",
+"80",
+"50"
+],
+"a": 3,
+"r": "Field size is defined as the distance between the 50% isodose lines (or 50% points on the beam profile), normally at the isocenter or reference depth. This corresponds to the light-field edges."
+},
+{
+"id": "tp-e0c54b",
+"s": "tp",
+"q": "The rationale for using a half-beam block in a treatment field is based on:",
+"o": [
+"absence of beam divergence at the central axis",
+"reduction of scatter dose to the central axis",
+"increased accuracy of dose calculation at the central axis",
+"increased depth of dmax due to the block"
+],
+"a": 0,
+"r": "A half-beam block shields half the field at the central axis, where the beam has no divergence. This leaves a straight, non-divergent edge that can be matched to an adjacent field without overlap."
+},
+{
+"id": "tp-0da7b8",
+"s": "tp",
+"q": "What lies between the thyroid notch and the cricoid cartilage?",
+"o": [
+"epiglottis",
+"larynx",
+"base of tongue",
+"carina"
+],
+"a": 1,
+"r": "The larynx lies between the thyroid notch (thyroid cartilage) and the cricoid cartilage, at about C4-C6. These palpable cartilages are key landmarks for laryngeal fields."
+},
+{
+"id": "tp-817987",
+"s": "tp",
+"q": "On inspiration, the diaphragm moves:",
+"o": [
+"caudally",
+"cephalad",
+"anteriorly",
+"posteriorly"
+],
+"a": 0,
+"r": "On inspiration, the diaphragm contracts and moves caudally (toward the feet), enlarging the chest cavity. This motion moves lung and upper abdominal tumors and is managed with gating or compression."
+},
+{
+"id": "tp-19bdfa",
+"s": "tp",
+"q": "The adrenal glands are located at the level of which thoracic vertebra?",
+"o": [
+"T12",
+"T10",
+"T8",
+"T6"
+],
+"a": 0,
+"r": "The adrenal glands sit on the upper poles of the kidneys at about T11-T12. This matters for upper abdominal fields and for staging scans."
+},
+{
+"id": "tp-291bde",
+"s": "tp",
+"q": "The opening of the uterus is called the:",
+"o": [
+"cervical os",
+"uterine fundus",
+"cervical meatus",
+"uterine meatus"
+],
+"a": 0,
+"r": "The cervical os is the opening of the cervix. The external os opens into the vagina and the internal os into the uterine cavity. The tandem passes through it during brachytherapy."
+},
+{
+"id": "tp-4be7b2",
+"s": "tp",
+"q": "The lymph nodes immediately inferior to the chin are the:",
+"o": [
+"submental",
+"submandibular",
+"supraclavicular",
+"suprasternal"
+],
+"a": 0,
+"r": "The submental nodes (level IA) lie beneath the chin, between the anterior bellies of the digastric muscles. The submandibular nodes (level IB) sit under the body of the mandible."
+},
+{
+"id": "tp-e7104a",
+"s": "tp",
+"q": "How many lobes do the left and right lungs have?",
+"o": [
+"left 2, right 3",
+"left 3, right 2",
+"left 2, right 2",
+"left 3, right 3"
+],
+"a": 0,
+"r": "The right lung has three lobes (upper, middle and lower). The left lung has two (upper and lower) to make room for the heart. The lingula is part of the left upper lobe."
+},
+{
+"id": "tp-70e03f",
+"s": "tp",
+"q": "The true vocal cords are located in the:",
+"o": [
+"subglottis",
+"glottis",
+"supraglottis",
+"epiglottis"
+],
+"a": 1,
+"r": "The larynx has three regions: supraglottis, glottis and subglottis. The true vocal cords make up the glottis. Glottic cancers often present early with hoarseness and have few lymphatics."
+},
+{
+"id": "tp-a6e125",
+"s": "tp",
+"q": "In which region of the pharynx are the pharyngeal tonsils (adenoids) located?",
+"o": [
+"nasopharynx",
+"oropharynx",
+"hypopharynx",
+"parapharynx"
+],
+"a": 0,
+"r": "The pharyngeal tonsils (adenoids) are in the posterior wall of the nasopharynx. Enlarged adenoids can obstruct the nasal airway."
+},
+{
+"id": "tp-a4b038",
+"s": "tp",
+"q": "In which region of the pharynx are the palatine tonsils located?",
+"o": [
+"nasopharynx",
+"oropharynx",
+"hypopharynx",
+"parapharynx"
+],
+"a": 1,
+"r": "The palatine (faucial) tonsils sit in the oropharynx between the palatoglossal and palatopharyngeal arches. The lingual tonsils are also in the oropharynx, at the base of tongue."
+},
+{
+"id": "tp-c7a1d7",
+"s": "tp",
+"q": "In which region of the pharynx is the pyriform sinus located?",
+"o": [
+"nasopharynx",
+"oropharynx",
+"hypopharynx",
+"larynx"
+],
+"a": 2,
+"r": "The pyriform sinuses are recesses on either side of the larynx in the hypopharynx. They are the most common site of hypopharyngeal cancer."
+},
+{
+"id": "tp-bc5e35",
+"s": "tp",
+"q": "Which factor controls the contrast of an image displayed on a viewing monitor?",
+"o": [
+"signal intensity",
+"window level",
+"proton density",
+"window width"
+],
+"a": 3,
+"r": "Window width sets the range of CT numbers displayed as shades of gray, so it controls image contrast. A narrow window gives high contrast; a wide window gives low contrast."
+},
+{
+"id": "tp-8ba2f6",
+"s": "tp",
+"q": "Which factor controls the brightness of an image displayed on a viewing monitor?",
+"o": [
+"signal intensity",
+"window level",
+"proton density",
+"window width"
+],
+"a": 1,
+"r": "Window level sets the center CT number of the displayed gray scale, so it controls image brightness. Raising the level makes the image darker; lowering it makes it brighter."
+},
+{
+"id": "tp-de0133",
+"s": "tp",
+"q": "The ratio of the dose at depth in tissue to the dose at the depth of maximum dose (electronic equilibrium) on the beam axis is the:",
+"o": [
+"TAR",
+"PDD",
+"scatter-air ratio (SAR)",
+"field size correction factor"
+],
+"a": 1,
+"r": "Percent depth dose is the dose at a depth divided by the dose at dmax (where electronic equilibrium is reached), on the central axis, times 100. It is used for SSD set-ups."
+},
+{
+"id": "tp-548aa7",
+"s": "tp",
+"q": "Bone metastases to the thoracic spine are often treated with which field arrangement?",
+"o": [
+"parallel-opposed pair",
+"90-degree hinged pair",
+"single PA field",
+"IMRT"
+],
+"a": 2,
+"r": "Thoracic spine metastases are often treated with a single posterior (PA) field. The spine is close to the posterior surface, so a single field gives adequate dose while limiting dose to the heart and anterior structures."
+},
+{
+"id": "tp-3548c8",
+"s": "tp",
+"q": "The skin dose with electron beams is about:",
+"o": [
+"80-90%",
+"30-40%",
+"100%",
+"10%"
+],
+"a": 0,
+"r": "Electron beams have little skin sparing, with a surface dose of about 75-95% that rises with energy. Bolus is often unnecessary for superficial targets."
+},
+{
+"id": "tp-b77211",
+"s": "tp",
+"q": "An advantage of using custom compensators instead of bolus for missing tissue in megavoltage therapy is:",
+"o": [
+"reduced penumbra",
+"preservation of skin sparing",
+"increased surface dose",
+"increased exit dose"
+],
+"a": 1,
+"r": "A compensator sits in the beam well away from the skin, so it corrects for missing tissue while keeping megavoltage skin sparing. Bolus on the skin would raise the surface dose."
+},
+{
+"id": "tp-2004d8",
+"s": "tp",
+"q": "What thickness of Cerrobend is equivalent to 5 cm of lead?",
+"o": [
+"4.2 cm",
+"5 cm",
+"6 cm",
+"7.2 cm"
+],
+"a": 2,
+"r": "Cerrobend is less dense than lead, so it must be about 1.2 times thicker for the same attenuation. 5 cm of lead x 1.2 = 6 cm of Cerrobend. About 7.5 cm (5 HVL) is typical for megavoltage blocks."
+},
+{
+"id": "tp-0d16b2",
+"s": "tp",
+"q": "Standard wedges range in angle from:",
+"o": [
+"15 to 75 degrees",
+"30 to 60 degrees",
+"45 to 75 degrees",
+"15 to 60 degrees"
+],
+"a": 3,
+"r": "Standard physical wedges come in 15, 30, 45 and 60 degree angles. Dynamic and virtual wedges can produce intermediate angles."
+},
+{
+"id": "tp-c841bc",
+"s": "tp",
+"q": "The shape of isodose curves depends largely on: 1. field size  2. depth dose  3. flattening filter  4. SSD",
+"o": [
+"1 and 4",
+"1 and 3",
+"2 and 4",
+"2 and 3"
+],
+"a": 1,
+"r": "Isodose curve shape depends on beam quality, source size, field size, SSD, flattening filter and beam modifiers. Field size and the flattening filter are the main factors shaping the curves across the field."
+},
+{
+"id": "tp-3cade2",
+"s": "tp",
+"q": "A missing-tissue compensator should be placed:",
+"o": [
+"directly on the skin",
+"at some distance from the skin",
+"on the end of the electron cone",
+"on top of the bolus at isocenter"
+],
+"a": 1,
+"r": "A compensator is mounted at a distance from the skin, typically at least 15-20 cm, usually on a tray in the treatment head. This keeps scattered electrons from reaching the skin, preserving skin sparing."
+},
+{
+"id": "tp-511006",
+"s": "tp",
+"q": "When treating the whole brain with opposed laterals, one way to minimize divergence into the eye opposite the entrance port is to:",
+"o": [
+"rotate the collimator",
+"place the central axis near the lateral canthus",
+"turn the patient's head slightly away from the beam",
+"rotate the couch away from the gantry"
+],
+"a": 1,
+"r": "Placing the central axis near the lateral canthus (half-beam blocking anteriorly) makes the anterior border non-divergent. The beam then doesn't diverge into the opposite eye's lens."
+},
+{
+"id": "tp-36ad69",
+"s": "tp",
+"q": "During craniospinal (CNS) irradiation, the patient is classically positioned:",
+"o": [
+"supine with chin extended",
+"supine with chin flexed",
+"prone with chin slightly extended",
+"prone with chin flexed"
+],
+"a": 2,
+"r": "In the classic craniospinal technique, the patient is prone with the chin slightly extended, which straightens the spine and keeps the mandible out of the spinal field's exit beam. Many centers now treat supine."
+},
+{
+"id": "tp-668a8e",
+"s": "tp",
+"q": "A breast bridge is used to:",
+"o": [
+"elevate the chest wall",
+"immobilize the affected arm",
+"measure the patient's separation and align the posterior borders of tangential breast fields",
+"immobilize the breast tissue"
+],
+"a": 2,
+"r": "A breast bridge is a setup device placed over the patient to measure separation and set the tangent angles, so the posterior edges of the tangential fields line up without diverging into the lung."
+},
+{
+"id": "tp-682e3a",
+"s": "tp",
+"q": "When treating the floor of the mouth, a bite block may be used to:",
+"o": [
+"move the palate away from the treatment field",
+"move the palate into the treatment field",
+"depress the tongue and move it into the treatment field",
+"push the teeth away from the treatment field"
+],
+"a": 0,
+"r": "For floor of mouth cancer, a bite block opens the mouth and pushes the palate and upper oral structures up and away from the field, while the tongue and floor of the mouth stay in it."
+},
+{
+"id": "tp-1df5cd",
+"s": "tp",
+"q": "Which modalities are commonly used for IGRT?",
+"o": [
+"CT and MRI",
+"PET and MRI",
+"CT and ultrasound",
+"ultrasound and MRI"
+],
+"a": 2,
+"r": "IGRT commonly uses CT-based imaging (kV cone-beam CT, MV CT) and ultrasound, along with planar kV and electronic portal imaging, to verify target position before treatment."
+},
+{
+"id": "tp-d51af8",
+"s": "tp",
+"q": "During radiation treatment to the thorax, the arm position should be:",
+"o": [
+"wherever the patient is comfortable",
+"consistent throughout the treatment course",
+"consistent throughout the treatment fraction",
+"above the head"
+],
+"a": 1,
+"r": "Arm position changes the position of the skin, chest wall and internal anatomy, so it must be the same at simulation and every treatment for reproducible setup throughout the course."
+},
+{
+"id": "tp-dbfa41",
+"s": "tp",
+"q": "Breast treatment usually includes elevating the arm. The angle of elevation should depend on the patient's ability to:",
+"o": [
+"elevate the arm, and the angle of the medial tangent",
+"move through the CT bore",
+"elevate the arm, and how the skin folds when it's elevated",
+"elevate the arm and keep the chest slope below 20 degrees"
+],
+"a": 2,
+"r": "The arm is raised to clear the tangent fields, but the angle should be what the patient can hold reproducibly without creating skin folds in the field, which would increase the skin reaction."
+},
+{
+"id": "tp-2872c1",
+"s": "tp",
+"q": "Patients receiving radiation for breast cancer can be positioned: 1. supine  2. lithotomy  3. prone  4. lateral decubitus",
+"o": [
+"1",
+"1 and 3",
+"1, 3 and 4",
+"1, 2, 3 and 4"
+],
+"a": 2,
+"r": "Breast patients are usually treated supine, but prone (breast hanging down) and lateral decubitus positions are also used, especially for large breasts. Lithotomy is for perineal and gynecologic procedures."
+},
+{
+"id": "tp-f58e62",
+"s": "tp",
+"q": "A good surface landmark for the true vocal cords is the:",
+"o": [
+"cricoid cartilage",
+"suprasternal notch",
+"thyroid cartilage",
+"hyoid bone"
+],
+"a": 2,
+"r": "The true vocal cords lie about 1 cm below the thyroid notch at the level of the thyroid cartilage (about C4-C5), which is the surface landmark for glottic fields."
+},
+{
+"id": "td-67e77b",
+"s": "td",
+"q": "When treating seminoma, the primary purpose of testicular shielding is to:",
+"o": [
+"shield the testes from electron contamination",
+"shield the testes from the direct beam",
+"reduce the amount of internal scatter to the testes",
+"ensure only the penis receives dose"
+],
+"a": 2,
+"r": "With a pelvic field for seminoma, the remaining testis lies outside the beam but receives dose from scatter inside the patient. A testicular (clamshell) shield reduces this internal scatter dose, which matters because the testis is very radiosensitive."
+},
+{
+"id": "td-fb1d17",
+"s": "td",
+"q": "The Fletcher-Suit applicator for gynecological brachytherapy consists of:",
+"o": [
+"a tandem and Syed-Neblett device",
+"a ring and tandem",
+"a tandem and vaginal cylinder",
+"a tandem and a pair of ovoids"
+],
+"a": 3,
+"r": "The Fletcher-Suit applicator is an intrauterine tandem with a pair of vaginal ovoids (colpostats). It is the classic system for intracavitary cervical brachytherapy."
+},
+{
+"id": "td-2300ac",
+"s": "td",
+"q": "Why is Ir-192 commonly used in HDR afterloading brachytherapy?",
+"o": [
+"longer half-life than Cs-137 or Co-60",
+"it decays with discrete gamma ray energies",
+"high specific activity and lower photon energy",
+"its photon energy is more penetrating than Cs-137"
+],
+"a": 2,
+"r": "Iridium-192 has very high specific activity, so a tiny source (about 1 mm) can deliver a high dose rate. Its moderate average energy (about 0.38 MeV) is easier to shield than Cs-137 or Co-60."
+},
+{
+"id": "td-8c14ca",
+"s": "td",
+"q": "Malignant neoplasms that originate in lymphoreticular tissue are called:",
+"o": [
+"sarcomas",
+"lymphosarcomas",
+"lymphomas",
+"lymphoreticulomas"
+],
+"a": 2,
+"r": "Lymphomas (Hodgkin and non-Hodgkin) are malignancies of the lymphoreticular system: lymph nodes, spleen and other lymphoid tissue. Sarcomas arise from connective tissue."
+},
+{
+"id": "td-a8873a",
+"s": "td",
+"q": "The most important method used to confirm malignancy is:",
+"o": [
+"radiologic imaging",
+"hematologic study",
+"histopathological examination",
+"clinical staging"
+],
+"a": 2,
+"r": "Histopathology (microscopic examination of a biopsy) is the definitive way to confirm malignancy and determine tumor type and grade. Imaging and blood tests can only suggest cancer."
+},
+{
+"id": "td-9ac089",
+"s": "td",
+"q": "The most common lung cancer in nonsmokers is:",
+"o": [
+"adenocarcinoma",
+"large cell carcinoma",
+"squamous cell carcinoma",
+"small cell carcinoma"
+],
+"a": 0,
+"r": "Adenocarcinoma is the most common lung cancer overall and by far the most common in people who have never smoked. Squamous and small cell carcinomas are strongly linked to smoking."
+},
+{
+"id": "td-acb355",
+"s": "td",
+"q": "A common subacute effect following total CNS (craniospinal) irradiation is:",
+"o": [
+"myelitis",
+"somnolence (hypersomnia)",
+"low WBC",
+"esophagitis"
+],
+"a": 1,
+"r": "Somnolence syndrome (drowsiness, lethargy and fatigue) is a subacute reaction weeks after cranial or craniospinal irradiation, especially in children, and usually resolves. Myelitis/myelopathy is a late effect; low WBC and esophagitis are acute."
+},
+{
+"id": "td-c97387",
+"s": "td",
+"q": "A malignant tumor of striated muscle is called a:",
+"o": [
+"leiomyoma",
+"fibrosarcoma",
+"epithelioma",
+"rhabdomyosarcoma"
+],
+"a": 3,
+"r": "Rhabdomyosarcoma is a malignant tumor of striated (skeletal) muscle and the most common soft tissue sarcoma in children. A leiomyoma is a benign smooth muscle tumor."
+},
+{
+"id": "td-7963fa",
+"s": "td",
+"q": "At what dose would permanent xerostomia be expected when the salivary glands are treated?",
+"o": [
+"10 Gy",
+"20 Gy",
+"30 Gy",
+"40 Gy"
+],
+"a": 3,
+"r": "Salivary function declines with dose. Doses above about 40 Gy to the whole gland usually cause permanent xerostomia. Modern guidelines limit the mean parotid dose to under about 26 Gy to spare function."
+},
+{
+"id": "td-0db725",
+"s": "td",
+"q": "Anaplasia is:",
+"o": [
+"loss of differentiation",
+"replacement by cell types that are not usually present",
+"an increase in the number of cells",
+"enlargement of cells"
+],
+"a": 0,
+"r": "Anaplasia is the loss of differentiation, so cells no longer resemble their tissue of origin or function normally. It is a hallmark of malignancy. Metaplasia is replacement by another cell type, hyperplasia is more cells, and hypertrophy is larger cells."
+},
+{
+"id": "td-7f55fc",
+"s": "td",
+"q": "The cancer management modality most likely to induce remission in newly diagnosed leukemia is:",
+"o": [
+"radiation",
+"immunotherapy",
+"chemotherapy",
+"hormone therapy"
+],
+"a": 2,
+"r": "Leukemia is a systemic disease of the blood and marrow, so systemic chemotherapy is the primary treatment and induces remission in most new cases. Radiation has a supporting role (e.g., CNS prophylaxis, TBI)."
+},
+{
+"id": "td-e1e7b5",
+"s": "td",
+"q": "Hyperplasia is:",
+"o": [
+"a change in cell type",
+"an increase in cell number",
+"an increase in cell size",
+"a decrease in cell size"
+],
+"a": 1,
+"r": "Hyperplasia is an increase in the number of cells in a tissue. Hypertrophy is an increase in cell size, and metaplasia is a change in cell type."
+},
+{
+"id": "td-96c848",
+"s": "td",
+"q": "Which cancer has the highest cure rate?",
+"o": [
+"non-Hodgkin lymphoma",
+"adenocarcinoma of the stomach",
+"bronchogenic carcinoma",
+"basal cell carcinoma"
+],
+"a": 3,
+"r": "Basal cell carcinoma grows slowly, rarely metastasizes and is very curable with surgery or radiation. It has a cure rate above 95%."
+},
+{
+"id": "td-4c1f0c",
+"s": "td",
+"q": "Which of the following most commonly spreads through the lymphatics?",
+"o": [
+"choriocarcinoma",
+"seminoma",
+"medulloblastoma",
+"osteogenic sarcoma"
+],
+"a": 1,
+"r": "Seminoma spreads in a predictable way through the lymphatics to the para-aortic and pelvic nodes, which is why those nodes are treated. Choriocarcinoma and osteosarcoma spread mainly through the blood."
+},
+{
+"id": "td-241f0d",
+"s": "td",
+"q": "Squamous cell carcinoma of the nasopharynx is most likely treated with:",
+"o": [
+"surgery",
+"brachytherapy, 60 Gy over 6 days",
+"external beam, 60 Gy in 6 weeks",
+"external beam, 30 Gy in 3 weeks"
+],
+"a": 2,
+"r": "Nasopharyngeal carcinoma sits in a surgically inaccessible location and is radiosensitive, so external beam radiation (now about 70 Gy in 7 weeks, often with chemotherapy) is the primary treatment. Of the options, 60 Gy in 6 weeks is the best match."
+},
+{
+"id": "td-701928",
+"s": "td",
+"q": "The French-American-British (FAB) system is used to classify:",
+"o": [
+"chronic leukemia",
+"acute leukemia",
+"non-Hodgkin lymphoma",
+"Hodgkin lymphoma"
+],
+"a": 1,
+"r": "The French-American-British (FAB) system classifies the acute leukemias (AML M0-M7 and ALL L1-L3) by cell type and morphology. It has largely been replaced by the WHO classification."
+},
+{
+"id": "td-8c342c",
+"s": "td",
+"q": "For glioblastoma multiforme of the right temporal lobe, which lymphatics would be included in the treatment field?",
+"o": [
+"retropharyngeal",
+"preauricular",
+"parotid",
+"none of the above"
+],
+"a": 3,
+"r": "The brain and central nervous system have no conventional lymphatic drainage, so treatment fields for primary brain tumors such as glioblastoma don't include lymph nodes."
+},
+{
+"id": "td-931238",
+"s": "td",
+"q": "Brachial plexopathy is a possible adverse effect of irradiating the:",
+"o": [
+"humerus",
+"abdomen",
+"supraclavicular fossa",
+"posterior fossa"
+],
+"a": 2,
+"r": "The brachial plexus runs through the supraclavicular fossa and axilla. High doses to supraclavicular fields (e.g., breast nodal or lung apex treatment) can cause plexopathy, with arm pain, numbness or weakness."
+},
+{
+"id": "td-8f1504",
+"s": "td",
+"q": "Hodgkin disease is most common in:",
+"o": [
+"females over 50",
+"males over 50",
+"females 10 years or younger",
+"males and females younger than 35"
+],
+"a": 3,
+"r": "Hodgkin lymphoma has a bimodal age distribution: the main peak is in adolescents and young adults (about 15-35), with a second peak after about 55. Both sexes are affected."
+},
+{
+"id": "td-1750d4",
+"s": "td",
+"q": "Which of the following malignant bone tumors arises from cartilage?",
+"o": [
+"Ewing sarcoma",
+"chondrosarcoma",
+"fibrosarcoma",
+"chordoma"
+],
+"a": 1,
+"r": "Chondrosarcoma is a malignant tumor of cartilage cells, usually in the pelvis, femur or shoulder of adults. Ewing sarcoma is a small round cell bone tumor, fibrosarcoma arises from fibrous tissue, and chordoma from notochord remnants."
+},
+{
+"id": "td-592574",
+"s": "td",
+"q": "Cells of malignant growths are commonly:",
+"o": [
+"anaplastic",
+"well differentiated",
+"slow growing",
+"poorly oxygenated"
+],
+"a": 0,
+"r": "Malignant cells are typically anaplastic: poorly differentiated, disorganized and unable to function like normal cells. Well-differentiated, slow-growing cells are more typical of benign tumors."
+},
+{
+"id": "td-d73701",
+"s": "td",
+"q": "Early-stage ovarian cancer is usually treated with:",
+"o": [
+"external beam to 65 Gy",
+"surgery followed by external beam to 50 Gy",
+"surgery followed by chemotherapy",
+"surgery, chemotherapy and hormone therapy"
+],
+"a": 2,
+"r": "Early ovarian cancer is treated with surgical staging and debulking (hysterectomy, salpingo-oophorectomy, omentectomy), followed by platinum-based chemotherapy. Radiation is rarely used."
+},
+{
+"id": "td-43f84e",
+"s": "td",
+"q": "In primary bone tumors, the main route of distant metastasis is through the:",
+"o": [
+"adhesions",
+"connective tissue",
+"vasculature",
+"lymphatic vessels"
+],
+"a": 2,
+"r": "Primary bone sarcomas spread mainly through the blood (hematogenously), most often to the lungs. Lymph node spread is uncommon."
+},
+{
+"id": "td-73bfc3",
+"s": "td",
+"q": "A whitish plaque on the oral mucosa that can progress to squamous cell carcinoma is:",
+"o": [
+"Bowen disease",
+"leukoplakia",
+"lentigo maligna",
+"plantar maligna"
+],
+"a": 1,
+"r": "Leukoplakia is a white patch or plaque on the oral mucosa that can't be scraped off. It is a premalignant lesion that can progress to squamous cell carcinoma, especially in tobacco users."
+},
+{
+"id": "td-2efd3f",
+"s": "td",
+"q": "The most common site for Ewing sarcoma is the:",
+"o": [
+"ribs",
+"skull",
+"pelvis",
+"mandible"
+],
+"a": 2,
+"r": "Ewing sarcoma most often arises in the pelvis and the long bones, especially the femur. It mainly affects children and adolescents and is radiosensitive."
+},
+{
+"id": "td-9371c7",
+"s": "td",
+"q": "What type of resection scrapes away the tumor?",
+"o": [
+"curettage",
+"en bloc resection",
+"excisional resection",
+"wide margin resection"
+],
+"a": 0,
+"r": "Curettage scrapes tumor out with a curette, usually for benign or low-grade bone lesions and some skin cancers. En bloc and wide resections remove the tumor in one piece with a margin of normal tissue."
+},
+{
+"id": "td-970e89",
+"s": "td",
+"q": "If preoperative radiation is used for colorectal (rectal) cancer, the total tumor dose is about:",
+"o": [
+"35 Gy",
+"40 Gy",
+"50 Gy",
+"65 Gy"
+],
+"a": 2,
+"r": "Preoperative long-course chemoradiation for rectal cancer delivers about 45-50.4 Gy in 1.8 Gy fractions, followed by surgery. Short-course 25 Gy in 5 fractions is the alternative."
+},
+{
+"id": "td-c3dab0",
+"s": "td",
+"q": "An allogeneic bone marrow transplant means the marrow is:",
+"o": [
+"removed from the patient, treated, then reinfused",
+"removed from the patient and reinfused after remission",
+"received from a sibling or matched donor",
+"received from an identical twin"
+],
+"a": 2,
+"r": "In an allogeneic transplant, marrow or stem cells come from a matched donor, usually a sibling or unrelated match. Autologous uses the patient's own cells; syngeneic uses an identical twin's."
+},
+{
+"id": "td-647e6f",
+"s": "td",
+"q": "Tamoxifen reduces the risk of breast cancer, but which secondary cancer can arise from its use?",
+"o": [
+"lung",
+"thyroid",
+"endometrial",
+"hypopharyngeal"
+],
+"a": 2,
+"r": "Tamoxifen blocks estrogen in breast tissue but acts like estrogen on the uterus. This raises the risk of endometrial cancer, so abnormal vaginal bleeding on tamoxifen should be evaluated."
+},
+{
+"id": "td-a233d5",
+"s": "td",
+"q": "The standard treatment for thyroid cancer is:",
+"o": [
+"surgery",
+"external beam radiation",
+"chemotherapy",
+"hormone therapy"
+],
+"a": 0,
+"r": "Surgery (usually total thyroidectomy) is the standard primary treatment for thyroid cancer. It is often followed by radioactive iodine (I-131) ablation and thyroid hormone suppression for differentiated types."
+},
+{
+"id": "td-a4b4a2",
+"s": "td",
+"q": "Which type of thyroid cancer is characterized by rapid growth and local invasion of structures?",
+"o": [
+"mixed cell",
+"follicular",
+"medullary",
+"anaplastic"
+],
+"a": 3,
+"r": "Anaplastic thyroid carcinoma is the most aggressive type. It grows rapidly, invades the trachea, esophagus and neck structures, and has a very poor prognosis."
+},
+{
+"id": "td-33c733",
+"s": "td",
+"q": "The most common type of thyroid cancer is:",
+"o": [
+"papillary",
+"follicular",
+"anaplastic",
+"serous"
+],
+"a": 0,
+"r": "Papillary carcinoma accounts for about 80% of thyroid cancers. It is well differentiated, spreads to cervical lymph nodes and has an excellent prognosis."
+},
+{
+"id": "td-15d1bd",
+"s": "td",
+"q": "The expected total dose to point A for cervical cancer, combining external beam and brachytherapy, is about:",
+"o": [
+"35 Gy",
+"70 Gy",
+"90 Gy",
+"140 Gy"
+],
+"a": 2,
+"r": "Cervical cancer treatment typically combines about 45 Gy external beam to the pelvis with brachytherapy, bringing point A to about 80-90 Gy (EQD2) in total."
+},
+{
+"id": "td-67fadb",
+"s": "td",
+"q": "The total dose to the lumpectomy site with accelerated partial breast irradiation using HDR brachytherapy is approximately:",
+"o": [
+"20 Gy",
+"35 Gy",
+"45 Gy",
+"60 Gy"
+],
+"a": 1,
+"r": "HDR accelerated partial breast irradiation (e.g., MammoSite or multicatheter) classically delivers 34 Gy in 10 fractions, given twice daily over 5 days, to the lumpectomy cavity margin."
+},
+{
+"id": "td-36b486",
+"s": "td",
+"q": "The dose rate used for LDR brachytherapy is typically:",
+"o": [
+"20 Gy/hour",
+"12 Gy/hour",
+"0.4-2 Gy/hour",
+"0.01 Gy/minute"
+],
+"a": 2,
+"r": "ICRU 38 defines low dose rate as 0.4-2 Gy per hour, medium dose rate as 2-12 Gy/hr and high dose rate as above 12 Gy/hr. Classic LDR gynecologic implants ran at about 0.5 Gy/hr."
+},
+{
+"id": "td-1b8326",
+"s": "td",
+"q": "Whole-brain irradiation may be given with the inferior border of the field at:",
+"o": [
+"the base of the skull",
+"the mastoid tip",
+"C2",
+"C7"
+],
+"a": 2,
+"r": "In whole-brain (helmet) fields, the inferior border is often placed at C1-C2 to fully cover the meninges and the base of the brain, including the temporal lobes."
+},
+{
+"id": "td-c30619",
+"s": "td",
+"q": "Which radioisotope is commonly used for permanent interstitial implants of the prostate?",
+"o": [
+"cesium-137",
+"cobalt-60",
+"gold-198",
+"iodine-131"
+],
+"a": 2,
+"r": "Gold-198 seeds (half-life 2.7 days) have been used for permanent interstitial prostate implants. I-125 and Pd-103 are the most common today."
+},
+{
+"id": "td-8f9663",
+"s": "td",
+"q": "When treating the maxillary antrum, the organ at greatest risk of damage is the:",
+"o": [
+"pituitary",
+"brain",
+"lens",
+"sphenoid"
+],
+"a": 2,
+"r": "The roof of the maxillary sinus (antrum) is the floor of the orbit. Fields for the antrum put the eye, especially the radiosensitive lens, at greatest risk."
+},
+{
+"id": "td-24dcb1",
+"s": "td",
+"q": "Hypogastric lymph nodes would likely be included in radiation fields for cancer of the:",
+"o": [
+"base of tongue",
+"stomach",
+"esophagus",
+"rectum"
+],
+"a": 3,
+"r": "The hypogastric (internal iliac) nodes drain the rectum, bladder, prostate and cervix, so they are included in rectal cancer fields. They are not part of the external iliac chain."
+},
+{
+"id": "td-e0831c",
+"s": "td",
+"q": "For bladder cancer, the treatment field should include the bladder and regional nodes such as the:",
+"o": [
+"obturator and inguinal",
+"obturator, external and internal iliac",
+"hypogastric and external iliac",
+"external iliac, hypogastric and inguinal"
+],
+"a": 1,
+"r": "Bladder cancer fields cover the bladder and the regional pelvic nodes: obturator, internal iliac (hypogastric) and external iliac. The perivesical nodes drain to these chains."
+},
+{
+"id": "td-8eb48e",
+"s": "td",
+"q": "When treating pancreatic cancer, extra care is taken to limit dose to the:",
+"o": [
+"heart, stomach and small bowel",
+"stomach, kidney and small bowel",
+"stomach, rectum and bladder",
+"liver, kidney and spinal cord"
+],
+"a": 3,
+"r": "Pancreatic fields sit next to the liver, kidneys and spinal cord, all dose-limiting organs. Kidney and liver function and spinal cord tolerance must be respected (along with the bowel and stomach)."
+},
+{
+"id": "td-6f7831",
+"s": "td",
+"q": "Indian club needles have:",
+"o": [
+"good seed",
+"one hot end",
+"two hot ends",
+"even activity"
+],
+"a": 1,
+"r": "Indian club radium needles have their activity concentrated at one end (one hot end). Dumbbell needles have two hot ends, and uniform needles have even activity throughout."
+},
+{
+"id": "td-16eb8d",
+"s": "td",
+"q": "Overall, most intracranial malignancies are:",
+"o": [
+"glioblastoma multiforme",
+"astrocytoma",
+"metastatic",
+"pituitary adenoma"
+],
+"a": 2,
+"r": "Metastases are the most common intracranial malignancy, outnumbering primary brain tumors. They most often come from lung cancer, breast cancer and melanoma."
+},
+{
+"id": "td-faaa51",
+"s": "td",
+"q": "Which radioisotope is sometimes instilled into the peritoneal cavity to treat gynecological malignancies?",
+"o": [
+"cesium-137",
+"iridium-192",
+"iodine-131",
+"phosphorus-32"
+],
+"a": 3,
+"r": "Phosphorus-32, a pure beta emitter, was instilled into the peritoneal cavity as a colloid suspension to treat microscopic peritoneal spread of ovarian cancer."
+},
+{
+"id": "td-7947ca",
+"s": "td",
+"q": "The current standard total dose for prophylactic cranial irradiation in small cell lung cancer is:",
+"o": [
+"2500 cGy",
+"3000 cGy",
+"3600 cGy",
+"4500 cGy"
+],
+"a": 0,
+"r": "Prophylactic cranial irradiation for small cell lung cancer is now typically 25 Gy in 10 fractions. It reduces brain metastases and improves survival."
+},
+{
+"id": "td-810137",
+"s": "td",
+"q": "Prophylactic cranial irradiation for ALL is given to a total dose of:",
+"o": [
+"1800 cGy",
+"3000 cGy",
+"4500 cGy",
+"6000 cGy"
+],
+"a": 0,
+"r": "In acute lymphoblastic leukemia, CNS prophylaxis with cranial irradiation, when used, is typically about 18 Gy. It targets leukemic cells in the meninges that chemotherapy doesn't reach well."
+},
+{
+"id": "td-470095",
+"s": "td",
+"q": "In seminoma treatment, the remaining testicle is shielded because its TD 5/5 is as low as:",
+"o": [
+"1 Gy",
+"10 Gy",
+"20 Gy",
+"40 Gy"
+],
+"a": 0,
+"r": "The testis is very radiosensitive. TD 5/5 for permanent sterility is about 1 Gy, and even 0.1-0.2 Gy can temporarily reduce sperm counts. That's why the remaining testis is shielded."
+},
+{
+"id": "td-a5deac",
+"s": "td",
+"q": "When treating prostate cancer, which factor would NOT cause prostate movement?",
+"o": [
+"respiration",
+"rectal volume",
+"variation in patient position",
+"cecum volume"
+],
+"a": 3,
+"r": "Respiration, rectal and bladder filling, and patient position all move the prostate. The cecum lies in the right lower abdomen, away from the prostate, so its volume has no meaningful effect."
+},
+{
+"id": "td-65fbc0",
+"s": "td",
+"q": "In treating lung tumors, the threshold dose for radiation pneumonitis is about:",
+"o": [
+"2000-2500 cGy",
+"3000-3500 cGy",
+"4000-4500 cGy",
+"5000-5500 cGy"
+],
+"a": 0,
+"r": "Radiation pneumonitis becomes significant above about 20-25 Gy to substantial lung volumes, which is why V20 and mean lung dose are constrained. It appears subacutely, 1-6 months after treatment."
+},
+{
+"id": "td-860977",
+"s": "td",
+"q": "If the lower mantle (inverted Y) is treated in a female patient with Hodgkin disease, gonadal protection may consist of:",
+"o": [
+"treating with posterior ports",
+"placing the patient prone",
+"placing a lead apron over the ovaries",
+"moving the ovaries out of the field surgically (oophoropexy)"
+],
+"a": 3,
+"r": "Oophoropexy surgically moves the ovaries toward the midline or out of the pelvic field before inverted-Y (lower mantle) irradiation, so they can be shielded and fertility preserved."
+},
+{
+"id": "td-05289e",
+"s": "td",
+"q": "How many cobalt sources are in a (classic) Gamma Knife unit?",
+"o": [
+"25",
+"105",
+"201",
+"280"
+],
+"a": 2,
+"r": "The classic Gamma Knife has 201 cobalt-60 sources focused on a single point. Newer Perfexion and Icon models use 192 sources."
+},
+{
+"id": "td-8a17a3",
+"s": "td",
+"q": "The primary skin cancer with the worst prognosis is:",
+"o": [
+"basal cell carcinoma",
+"squamous cell carcinoma",
+"Bowen disease",
+"melanoma"
+],
+"a": 3,
+"r": "Melanoma has the worst prognosis of the primary skin cancers because it metastasizes early through the lymphatics and blood. Basal cell carcinoma rarely metastasizes."
+},
+{
+"id": "td-aa0584",
+"s": "td",
+"q": "Hair loss is usually permanent when the scalp receives doses above about:",
+"o": [
+"10 Gy",
+"20 Gy",
+"30 Gy",
+"45-55 Gy"
+],
+"a": 3,
+"r": "Temporary hair loss starts at about 3-5 Gy and usually regrows within months. Doses above about 45-55 Gy to the scalp generally destroy the hair follicles and cause permanent alopecia."
+},
+{
+"id": "td-120b8c",
+"s": "td",
+"q": "Metastatic disease may cause fluid to accumulate in the pericardial sac. This may lead to:",
+"o": [
+"mitral stenosis",
+"tachycardia",
+"pericarditis",
+"pericardial tamponade"
+],
+"a": 3,
+"r": "Fluid in the pericardial sac (malignant effusion) can compress the heart and stop it from filling, causing cardiac tamponade. This is a medical emergency, with low blood pressure, muffled heart sounds and distended neck veins."
+},
+{
+"id": "td-1e7952",
+"s": "td",
+"q": "The transient sensation of an electric shock traveling down the spine and extremities after irradiation of the spinal cord is called:",
+"o": [
+"Lhermitte sign",
+"Babinski sign",
+"Turner syndrome",
+"Gardner syndrome"
+],
+"a": 0,
+"r": "Lhermitte's sign is an electric-shock sensation down the spine and into the limbs on neck flexion. It can occur weeks to months after spinal cord irradiation from transient demyelination, and usually resolves."
+},
+{
+"id": "td-843b1b",
+"s": "td",
+"q": "An anticancer therapy that uses the body's own immune system often requires producing:",
+"o": [
+"attenuated leukocytes",
+"irradiated erythrocytes",
+"monoclonal antibodies",
+"enhanced thrombocytes"
+],
+"a": 2,
+"r": "Immunotherapy uses or boosts the immune system against cancer. Many agents are monoclonal antibodies, lab-produced antibodies that target specific antigens such as HER2 (trastuzumab) or PD-1."
 }
 ];
