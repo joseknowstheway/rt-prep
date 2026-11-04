@@ -552,7 +552,7 @@ function navGrid(a){
 }
 function submitPrompt(){
   const a=ex(); const un=a.n-Object.keys(a.ans).length; const fl=a.flags.length;
-  modal(`<h2 class="h2">Submit exam?</h2><p class="sub" style="margin:0">${un?`${un} question${un>1?"s are":" is"} unanswered and will be scored as incorrect.`:"Every question is answered."}${fl?` ${fl} flagged for review.`:""}</p>
+  modal(`<h2 class="h2">Submit exam?</h2><p class="sub" style="margin:0">${un?`${un} question${un>1?"s are":" is"} unanswered and will be scored as incorrect and recorded as missed in your history.`:"Every question is answered."}${fl?` ${fl} flagged for review.`:""}</p>
   <div class="row"><button class="btn primary" data-act="ex-confirm">Submit and grade</button><button class="btn" data-close>Keep working</button></div>`);
 }
 function submitExam(auto){
@@ -561,8 +561,8 @@ function submitExam(auto){
   const sec={}; SECTIONS.forEach(s=>sec[s.k]=[0,0]); let correct=0; const items=[], recs=[];
   a.ids.forEach(id=>{const q=QBY[id]; if(!q) return; const c=a.ans[id]; const ok=c===q.a; sec[q.s][1]++; if(ok){sec[q.s][0]++;correct++}
     items.push([id,a.perm[id],c===undefined?-1:c,a.flags.includes(id)?1:0]);
-    // unanswered: skipped on a manual submit, incorrect when time ran out
-    recs.push({qid:id,r:c===undefined?(auto?0:2):(ok?1:0),c:c===undefined?-1:c,src:"x",t:end});});
+    // unanswered questions are logged as incorrect, whether submitted by hand or when time ran out
+    recs.push({qid:id,r:ok?1:0,c:c===undefined?-1:c,src:"x",t:end});});
   addExam({id:a.id,startedAt:a.startedAt,endedAt:end,timed:a.timed,limitSec:a.limitSec,n:a.n,correct,sec,items,auto:!!auto});
   setActive(null); addAttempts(recs);
   closeModal(); S.exams.view="result"; S.exams.resultId=a.id; S.exams.filter="all";
@@ -594,7 +594,7 @@ function renderResult(r){
 }
 function reviewItem(it){
   const q=QBY[it.id]; const perm=[...it.perm].map(Number); const ok=it.c===q.a; const blank=it.c===-1;
-  const mark=blank?(it.auto?`<span class="pill i">Time ran out</span>`:`<span class="pill s">Blank</span>`):ok?`<span class="pill c">Correct</span>`:`<span class="pill i">Incorrect</span>`;
+  const mark=blank?`<span class="pill i">${it.auto?"Time ran out":"Unanswered"}</span>`:ok?`<span class="pill c">Correct</span>`:`<span class="pill i">Incorrect</span>`;
   const opts=perm.map((oi,pos)=>{const cls=oi===q.a?"correct":(oi===it.c?"wrong":"dim");return `<li><div class="opt ${cls}"><span class="k">${L[pos]}</span><span>${esc(q.o[oi])}${oi===it.c?' <span style="font-size:12px;color:var(--muted)">(your answer)</span>':""}</span></div></li>`}).join("");
   return `<details><summary><span class="mono" style="font-size:13px;color:var(--muted);min-width:30px">${it.i+1}</span><span class="t">${esc(q.q)}</span>${mark}</summary>
     <div class="body"><span class="sectag" style="align-self:flex-start">${esc(SECNAME[q.s])}</span><ol class="opts">${opts}</ol><div class="rat">${esc(q.r)}</div></div></details>`;
