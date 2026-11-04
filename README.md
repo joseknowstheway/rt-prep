@@ -18,6 +18,7 @@ An installable study app for the ARRT Radiation Therapy registry exam. It has 48
 | `sw.js`, `manifest.webmanifest`, `icons/` | Offline support and the Home Screen install |
 | `firestore.rules`, `firebase.json`, `.firebaserc` | Firestore security rules and the Firebase CLI config to deploy them |
 | `scripts/set-members.sh` | Sets the two accounts that share the data, and turns off new sign-ups |
+| `scripts/reset-history.sh` | Wipes all shared answers and exams for both accounts (devices clear their local copy on next sync) |
 | `.github/workflows/deploy.yml` | Deploys to GitHub Pages on every push to `main` |
 
 ## Backend (already set up)

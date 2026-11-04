@@ -167,7 +167,7 @@ async function syncNow(pull){
   if(syncing){ syncAgain=true; return; }
   syncing=true; updateSyncPill();
   let changed=false;
-  try{ await flush(); if(pull) changed=await pull_(); D.meta.lastSync=now(); lastErr=null; save("meta"); }
+  try{ changed=await applyReset(); await flush(); if(pull) changed=(await pull_())||changed; D.meta.lastSync=now(); lastErr=null; save("meta"); }
   catch(e){ lastErr=e&&e.message?e.message:String(e); }
   syncing=false; updateSyncPill();
   if(changed) onData(false);
@@ -209,6 +209,23 @@ async function flush(){
     }else{ D.outbox.shift(); }
     save("outbox"); updateSyncPill();
   }
+}
+// History reset: an admin writes app_state/reset = {id, at} (see scripts/reset-history.sh). Each device
+// applies it once, dropping everything recorded before `at`, including unsent changes. It runs
+// before flush so stale answers are never re-uploaded.
+async function applyReset(){
+  const r=await api(SPACE+"/app_state/reset?mask.fieldPaths=data",{allow404:true});
+  if(r.status===404) return false;
+  let rs=null; try{rs=JSON.parse(fsGet(await r.json(),"data"))}catch(e){}
+  if(!rs||!rs.id||rs.id===D.meta.resetId) return false;
+  const old=t=>!(t>rs.at);
+  D.attempts=D.attempts.filter(a=>!old(a.t));
+  D.exams=Object.fromEntries(Object.entries(D.exams).filter(([,x])=>!old(x.endedAt)));
+  if(D.active&&old(D.active.startedAt)) D.active=null;
+  D.outbox=D.outbox.filter(o=>!(o.k==="a"&&old(o.row.t))&&!(o.k==="x"&&old(o.row.endedAt))&&!(o.k==="s"&&o.data&&old(o.data.startedAt)));
+  D.meta.resetId=rs.id; D.meta.since=D.meta.xsince=null; byQ=null;
+  save("attempts","exams","active","outbox","meta");
+  return true;
 }
 async function pull_(){
   let changed=false;
