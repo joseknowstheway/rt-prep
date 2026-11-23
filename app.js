@@ -269,13 +269,12 @@ function updateSyncPill(){ const [s,t]=syncLabel(); const el=$("#sync"); if(!el)
 /* ---------- history model ---------- */
 function status(qid){
   const a=attempts(qid); if(!a.length) return "u";
-  if(a.length>=3&&a.slice(-3).every(x=>x[1]===1)) return "mastered";
   return ["i","c","s"][a[a.length-1][1]];
 }
-const STATUS_LABEL={mastered:"Mastered",c:"Correct last",i:"Missed last",s:"Skipped last",u:"Unseen"};
+const STATUS_LABEL={c:"Correct last",i:"Missed last",s:"Skipped last",u:"Unseen"};
 function secStats(sec){
   const qs=QDATA.filter(q=>sec==="all"||q.s===sec);
-  const o={total:qs.length,mastered:0,c:0,i:0,s:0,u:0,att:0,cor:0};
+  const o={total:qs.length,c:0,i:0,s:0,u:0,att:0,cor:0};
   qs.forEach(q=>{o[status(q.id)]++;attempts(q.id).forEach(a=>{if(a[1]!==2){o.att++;if(a[1]===1)o.cor++}})});
   return o;
 }
@@ -371,11 +370,12 @@ function masteryPanel(){
   const rows=SECTIONS.map(s=>{const o=secStats(s.k);
     const seg=(v,c)=>v?`<span style="width:${100*v/o.total}%;background:${c}"></span>`:"";
     const seen=o.total-o.u;
-    return `<div class="secrow"><span class="nm">${esc(s.name)}</span><span class="st">${seen}/${o.total} seen · ${o.mastered} mastered · ${o.att?pct(o.cor,o.att)+"% correct":"—"}</span>
-    <div class="bar" aria-hidden="true">${seg(o.mastered,"var(--ok)")}${seg(o.c,"var(--iso-cold)")}${seg(o.i,"var(--bad)")}${seg(o.s,"var(--iso-warm)")}</div></div>`}).join("");
+    return `<div class="secrow"><span class="nm">${esc(s.name)}</span><span class="st">${seen}/${o.total} seen${seen?` · ${o.c} right · ${o.i} wrong · ${o.s} skipped`:""}</span>
+    <div class="bar" aria-hidden="true">${seg(o.c,"var(--ok)")}${seg(o.i,"var(--bad)")}${seg(o.s,"var(--iso-warm)")}</div></div>`}).join("");
   return `<section class="panel stack"><h2 class="h2">Coverage by area</h2>
     <div class="secs">${rows}</div>
-    <div class="legend"><span><i style="background:var(--ok)"></i>Mastered (last 3 correct)</span><span><i style="background:var(--iso-cold)"></i>Correct last</span><span><i style="background:var(--bad)"></i>Missed last</span><span><i style="background:var(--iso-warm)"></i>Skipped last</span><span><i style="background:var(--sunk)"></i>Unseen</span></div></section>`;
+    <p class="sub" style="margin:0;font-size:13px">Based on your most recent answer to each question.</p>
+    <div class="legend"><span><i style="background:var(--ok)"></i>Correct last</span><span><i style="background:var(--bad)"></i>Missed last</span><span><i style="background:var(--iso-warm)"></i>Skipped last</span><span><i style="background:var(--sunk)"></i>Unseen</span></div></section>`;
 }
 function startStudy(ids){
   if(!ids.length){toast("No questions match those filters.");return}
@@ -651,13 +651,13 @@ function reviewItem(it){
    ===================================================================== */
 function renderHistory(){
   const h=S.hist; const o=secStats("all"); const sel=h.sel&&QBY[h.sel]?h.sel:null;
-  const stChips=[["all","All"],["mastered","Mastered"],["i","Missed last"],["s","Skipped last"],["c","Correct last"],["u","Unseen"]];
+  const stChips=[["all","All"],["i","Missed last"],["s","Skipped last"],["c","Correct last"],["u","Unseen"]];
   return `<div class="wrap" style="max-width:${sel?"1240px":"900px"}">
     <div class="stack" style="gap:6px"><div class="eyebrow">History</div><h1 class="h1">Every attempt</h1>
-    <p class="sub">Check that you get each question right consistently. Mastered means your last three attempts were all correct.</p></div>
+    <p class="sub">Each question's status is your most recent answer. Open a question to see every attempt you've made on it.</p></div>
     <div class="stats"><div class="stat"><b>${QDATA.length-o.u}<span style="font-size:16px;color:var(--muted)">/${QDATA.length}</span></b><span>Questions seen</span></div>
-      <div class="stat"><b>${o.att?pct(o.cor,o.att)+"%":"—"}</b><span>Answer accuracy</span></div>
-      <div class="stat"><b style="color:var(--ok)">${o.mastered}</b><span>Mastered</span></div>
+      <div class="stat"><b>${o.att?pct(o.cor,o.att)+"%":"—"}</b><span>Lifetime accuracy</span></div>
+      <div class="stat"><b style="color:var(--ok)">${o.c}</b><span>Correct last</span></div>
       <div class="stat"><b style="color:var(--bad)">${o.i+o.s}</b><span>Need work</span></div></div>
     <div class="hsplit ${sel?"has-sel":""}">
       <div class="stack">
@@ -678,7 +678,7 @@ function histFiltered(){
 function renderHistList(){
   const list=$("#hlist"); if(!list) return;
   const qs=histFiltered(); $("#hcount").textContent=`${qs.length} question${qs.length===1?"":"s"}`; $("#hstudy").disabled=!qs.length;
-  const order={i:0,s:1,c:2,mastered:3,u:4}; const st={}; qs.forEach(q=>st[q.id]=status(q.id));
+  const order={i:0,s:1,c:2,u:3}; const st={}; qs.forEach(q=>st[q.id]=status(q.id));
   qs.sort((a,b)=>order[st[a.id]]-order[st[b.id]]);
   list.innerHTML=qs.length?qs.map(q=>{const a=attempts(q.id); const cor=a.filter(x=>x[1]===1).length;
     return `<li><button class="hitem" data-act="h-open" data-v="${q.id}" aria-current="${S.hist.sel===q.id}"><span class="t">${esc(q.q)}</span><span class="pill ${st[q.id]}">${STATUS_LABEL[st[q.id]]}</span>
@@ -692,7 +692,8 @@ function renderDetail(id){
     <div class="row" style="justify-content:space-between"><button class="btn ghost" data-act="h-close" style="padding:6px 4px;min-height:36px">‹ Close</button><span class="pill ${st}">${STATUS_LABEL[st]}</span></div>
     <div class="cardmeta"><span class="sectag">${esc(SECNAME[q.s])}</span><span class="qid">${id.toUpperCase()}</span></div>
     <h2 class="stem">${esc(q.q)}</h2><ol class="opts">${opts}</ol><div class="rat">${esc(q.r)}</div>
-    <h3 class="h2" style="font-size:18px;margin-top:6px">Attempts (${a.length})</h3>
+    <h3 class="h2" style="font-size:18px;margin-top:6px">Lifetime attempts (${a.length})</h3>
+    ${a.length?`<div class="row" style="gap:8px"><span class="pill c">${a.filter(x=>x[1]===1).length} correct</span><span class="pill i">${a.filter(x=>x[1]===0).length} incorrect</span><span class="pill s">${a.filter(x=>x[1]===2).length} skipped</span></div>`:""}
     ${a.length?`<div class="tablewrap"><table class="att"><thead><tr><th>When</th><th>Mode</th><th>Result</th><th>Your choice</th></tr></thead><tbody>${rows}</tbody></table></div><p style="font-size:12.5px;color:var(--muted);margin:0">Letters follow the order shown here. Answer choices are shuffled each time you see a question.</p>`:`<div class="empty" style="padding:12px">You haven't attempted this question yet.</div>`}
     <button class="btn" data-act="h-studyone" data-v="${id}">Study this question</button>
   </section>`;

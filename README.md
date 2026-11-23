@@ -62,7 +62,7 @@ Each Home Screen app has its own storage, separate from Safari, so sign in insid
 
 - Every answer is written to the device right away and queued for upload. The queue uploads when you're online and signed in. The header pill shows the state: **Synced**, **Syncing…**, **N waiting**, **Offline**, or **Not signed in**.
 - The app pulls new data when it opens, when you return to it, and every minute while it's open.
-- Attempts are append-only, so two people or devices can never overwrite each other's answers. A question's status (Mastered, Missed last, …) comes from the combined history, so the most recent answer by *either* person counts.
+- Attempts are append-only, so two people or devices can never overwrite each other's answers. A question's status (Correct last, Missed last, …) comes from the combined history, so the most recent answer by *either* person counts.
 - There is one shared exam in progress. Either person can resume it on any device, and while it exists, neither can start another. For a timed exam, the clock keeps running while you're away.
 
 ## Your data
