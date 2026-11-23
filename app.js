@@ -370,7 +370,8 @@ function renderStudy(){
 function masteryPanel(){
   const rows=SECTIONS.map(s=>{const o=secStats(s.k);
     const seg=(v,c)=>v?`<span style="width:${100*v/o.total}%;background:${c}"></span>`:"";
-    return `<div class="secrow"><span class="nm">${esc(s.name)}</span><span class="st">${o.mastered}/${o.total} mastered · ${o.att?pct(o.cor,o.att)+"%":"—"}</span>
+    const seen=o.total-o.u;
+    return `<div class="secrow"><span class="nm">${esc(s.name)}</span><span class="st">${seen}/${o.total} seen · ${o.mastered} mastered · ${o.att?pct(o.cor,o.att)+"% correct":"—"}</span>
     <div class="bar" aria-hidden="true">${seg(o.mastered,"var(--ok)")}${seg(o.c,"var(--iso-cold)")}${seg(o.i,"var(--bad)")}${seg(o.s,"var(--iso-warm)")}</div></div>`}).join("");
   return `<section class="panel stack"><h2 class="h2">Coverage by area</h2>
     <div class="secs">${rows}</div>
