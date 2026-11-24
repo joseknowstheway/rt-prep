@@ -827,7 +827,7 @@ document.addEventListener("click",e=>{
     case "st-review": S.study.sess.i=0; S.study.view="card"; render(true); break;
     case "st-new": S.study.sess=null; S.study.readIds=null; S.study.view="setup"; render(true); break;
     case "st-mode": S.study.mode=v; render(false); break;
-    case "st-read": S.study.readIds=poolIds(S.study.sec,S.study.pool); S.study.view="read"; render(true); break;
+    case "st-read": S.study.readIds=shuffle(poolIds(S.study.sec,S.study.pool)); S.study.view="read"; render(true); break;
     case "st-read-quiz": startStudy(S.study.readIds); break;
     case "st-top": $("#main").scrollTop=0; scrollTo(0,0); break;
     case "ex-len": S.exams.len=+v; render(false); break;
