@@ -128,7 +128,7 @@ async function api(path,opts={},retry=true){
   if(session.expires_at-60 < now()/1000){ if(!(await refreshSession())) throw new Error("Not signed in"); }
   const r=await fetch(FS_URL+path,Object.assign({},opts,{headers:Object.assign({Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},opts.headers||{})}));
   if(r.status===401&&retry){ if(await refreshSession()) return api(path,opts,false); throw new Error("Not signed in"); }
-  if(!r.ok&&!(r.status===404&&opts.allow404)){ let t=""; try{t=(await r.json()).error.message||""}catch(e){} const err=new Error(r.status===403?"This account doesn't have access to the shared study data.":t||("Server error "+r.status)); err.status=r.status; throw err; }
+  if(!r.ok&&!(r.status===404&&opts.allow404)){ let t=""; try{t=(await r.json()).error.message||""}catch(e){} const err=new Error(r.status===403?"The server refused this change"+(t?": "+t.replace(/\.$/,""):"")+". If this keeps happening, check this account is a member of the shared study data.":t||("Server error "+r.status)); err.status=r.status; throw err; }
   return r;
 }
 async function signIn(email,password){ setSession(await authPost(AUTH_URL+"signInWithPassword?key="+FB_KEY,{email,password,returnSecureToken:true})); lastErr=null; D.meta.since=D.meta.xsince=null; save("meta"); await syncNow(true); }
@@ -166,49 +166,63 @@ async function syncNow(pull){
   if(!SYNC_READY||!session||!navigator.onLine){ updateSyncPill(); return; }
   if(syncing){ syncAgain=true; return; }
   syncing=true; updateSyncPill();
-  let changed=false;
-  try{ changed=await applyReset(); await flush(); if(pull) changed=(await pull_())||changed; D.meta.lastSync=now(); lastErr=null; save("meta"); }
-  catch(e){ lastErr=e&&e.message?e.message:String(e); }
+  let changed=false, err=null;
+  // A failed upload must not stop this device from downloading the other account's answers.
+  try{ changed=await applyReset();
+    try{ await flush(); }catch(e){ err=e; }
+    if(pull) changed=(await pull_())||changed;
+  }catch(e){ err=err||e; }
+  if(!err){ D.meta.lastSync=now(); save("meta"); }
+  lastErr=err?(err.message||String(err)):null;
   syncing=false; updateSyncPill();
   if(changed) onData(false);
   if(syncAgain){ syncAgain=false; syncNow(false); }
 }
+// Refusals tied to one write (bad data, rules, already exists). Anything else (offline, server
+// error, signed out) stops the upload and is retried on the next sync.
+const rowErr=e=>[400,403,409,412].includes(e&&e.status);
+function attemptWrite(base,row){
+  const t=Number.isFinite(row.t)?row.t:now();
+  const c=Number.isInteger(row.c)&&row.c>=-1&&row.c<=3?row.c:-1;
+  const r=[0,1,2].includes(row.r)?row.r:0;
+  return {update:{name:`${base}/attempts/${row.id}`,fields:fsFields({qid:String(row.qid),answered_at:new Date(t),result:r,choice:c,source:row.src==="x"?"x":"s"})},
+    updateTransforms:[{fieldPath:"created_at",setToServerValue:"REQUEST_TIME"}],
+    currentDocument:{exists:false}};
+}
 async function flush(){
   const base=FS_DB+SPACE;
-  let guard=0;
-  while(D.outbox.length && guard++<200){
-    const op=D.outbox[0];
-    if(op.k==="a"){
-      // Attempts are create-only. A commit is atomic, so when one was already uploaded
-      // the server answers 409 naming it: drop that one and retry the rest.
-      let batch=D.outbox.filter(o=>o.k==="a").slice(0,500);
-      while(batch.length){
-        try{
-          await api(":commit",{method:"POST",body:JSON.stringify({writes:batch.map(o=>({
-            update:{name:`${base}/attempts/${o.row.id}`,fields:fsFields({qid:o.row.qid,answered_at:new Date(o.row.t),result:o.row.r,choice:o.row.c,source:o.row.src})},
-            updateTransforms:[{fieldPath:"created_at",setToServerValue:"REQUEST_TIME"}],
-            currentDocument:{exists:false}}))})});
-          break;
-        }catch(e){
-          const dup=e.status===409&&batch.find(o=>e.message.endsWith("/attempts/"+o.row.id)); if(!dup) throw e;
-          batch=batch.filter(o=>o!==dup); D.outbox=D.outbox.filter(o=>o!==dup);
-        }
-      }
-      const sent=new Set(batch); D.outbox=D.outbox.filter(o=>!sent.has(o));
-    }else if(op.k==="x"){
-      const r=op.row;
-      await api(":commit",{method:"POST",body:JSON.stringify({writes:[{
-        update:{name:`${base}/exams/${r.id}`,fields:fsFields({started_at:new Date(r.startedAt),ended_at:new Date(r.endedAt),timed:!!r.timed,n:r.n,correct:r.correct,data:JSON.stringify(r)})},
-        updateTransforms:[{fieldPath:"created_at",setToServerValue:"REQUEST_TIME"}]}]})});
-      D.outbox=D.outbox.filter(o=>o!==op);
-    }else if(op.k==="s"){
-      const path=`${SPACE}/app_state/${encodeURIComponent(op.key)}`;
-      if(op.data) await api(path,{method:"PATCH",body:JSON.stringify({fields:fsFields({data:JSON.stringify(op.data),updated_at:new Date(op.at)})})});
-      else await api(path,{method:"DELETE"});
-      D.outbox=D.outbox.filter(o=>o!==op);
-    }else{ D.outbox.shift(); }
-    save("outbox"); updateSyncPill();
+  const done=ops=>{ const d=new Set(ops); D.outbox=D.outbox.filter(o=>!d.has(o)); save("outbox"); updateSyncPill(); };
+  const commit=writes=>api(":commit",{method:"POST",body:JSON.stringify({writes})});
+  let firstErr=null, fails=0;
+  const refused=e=>{ if(!rowErr(e)) throw e; firstErr=firstErr||e; if(++fails>=5) throw e; };
+  // Answers go up 100 per commit. A commit is all-or-nothing, so when one is refused its answers
+  // are sent one at a time: "already exists" means it was uploaded earlier (a lost reply), and any
+  // other refusal keeps just that answer queued instead of holding up every answer behind it.
+  const pend=D.outbox.filter(o=>o.k==="a");
+  for(let i=0;i<pend.length;i+=100){
+    const batch=pend.slice(i,i+100);
+    try{ await commit(batch.map(o=>attemptWrite(base,o.row))); done(batch); continue; }
+    catch(e){ if(!rowErr(e)) throw e; }
+    for(const o of batch){
+      try{ await commit([attemptWrite(base,o.row)]); done([o]); fails=0; }
+      catch(e){ if(e.status===409){ done([o]); fails=0; } else refused(e); }
+    }
   }
+  for(const op of D.outbox.filter(o=>o.k!=="a")){
+    try{
+      if(op.k==="x"){
+        const r=op.row;
+        await commit([{update:{name:`${base}/exams/${r.id}`,fields:fsFields({started_at:new Date(r.startedAt||r.endedAt||now()),ended_at:new Date(r.endedAt||now()),timed:!!r.timed,n:r.n|0,correct:r.correct|0,data:JSON.stringify(r)})},
+          updateTransforms:[{fieldPath:"created_at",setToServerValue:"REQUEST_TIME"}]}]);
+      }else if(op.k==="s"){
+        const path=`${SPACE}/app_state/${encodeURIComponent(op.key)}`;
+        if(op.data) await api(path,{method:"PATCH",body:JSON.stringify({fields:fsFields({data:JSON.stringify(op.data),updated_at:new Date(op.at||now())})})});
+        else await api(path,{method:"DELETE",allow404:true});
+      }
+      done([op]);
+    }catch(e){ refused(e); }
+  }
+  if(firstErr) throw firstErr;
 }
 // History reset: an admin writes app_state/reset = {id, at} (see scripts/reset-history.sh). Each device
 // applies it once, dropping everything recorded before `at`, including unsent changes. It runs
